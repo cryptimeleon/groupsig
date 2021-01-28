@@ -1,5 +1,6 @@
 ## upb.crypto.groupsig
-**Warning: This library is used for research purposes *only* and is *not* sufficiently vetted for production use.**
+**WARNING: This library is meant to be used for prototyping and as a research tool *only*. 
+It has not been sufficiently vetted to use in production**
 
 This library offers interfaces and tests useful for implementing group signatures as well as example implementations in Java 8.
 The interfaces have largely been derived from [DiaArrRod15].

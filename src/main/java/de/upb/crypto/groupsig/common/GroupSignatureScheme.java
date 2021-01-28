@@ -1,6 +1,7 @@
 package de.upb.crypto.groupsig.common;
 
 import de.upb.crypto.craco.common.plaintexts.PlainText;
+import de.upb.crypto.craco.sig.Signature;
 import de.upb.crypto.math.serialization.Representation;
 import de.upb.crypto.math.serialization.StandaloneRepresentable;
 import de.upb.crypto.math.serialization.annotations.RepresentationRestorer;

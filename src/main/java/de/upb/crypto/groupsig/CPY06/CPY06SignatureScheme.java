@@ -1,6 +1,6 @@
 package de.upb.crypto.groupsig.CPY06;
 
-import de.upb.crypto.craco.common.interfaces.PlainText;
+import de.upb.crypto.craco.common.plaintexts.PlainText;
 import de.upb.crypto.craco.enc.sym.streaming.aes.ByteArrayImplementation;
 import de.upb.crypto.groupsig.CPY06.issuing_protocol.CPY06IssuingProtocol;
 import de.upb.crypto.groupsig.CPY06.issuing_protocol.CPY06IssuingProtocolUserInstance;

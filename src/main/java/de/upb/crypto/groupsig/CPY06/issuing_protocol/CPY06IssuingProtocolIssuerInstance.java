@@ -6,9 +6,9 @@ import de.upb.crypto.groupsig.CPY06.CPY06ManagerKey;
 import de.upb.crypto.groupsig.CPY06.CPY06PublicParameters;
 import de.upb.crypto.groupsig.interfaces.protocol.IssuingProtocol;
 import de.upb.crypto.groupsig.interfaces.protocol.IssuingProtocolInstance;
-import de.upb.crypto.math.interfaces.structures.GroupElement;
 import de.upb.crypto.math.serialization.Representation;
-import de.upb.crypto.math.structures.zn.Zp;
+import de.upb.crypto.math.structures.groups.GroupElement;
+import de.upb.crypto.math.structures.rings.zn.Zp;
 
 public class CPY06IssuingProtocolIssuerInstance implements IssuingProtocolInstance {
 

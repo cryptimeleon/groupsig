@@ -1,6 +1,5 @@
 package de.upb.crypto.groupsig.CPY06;
-
-import de.upb.crypto.craco.common.interfaces.PublicParameters;
+import de.upb.crypto.craco.common.PublicParameters;
 import de.upb.crypto.groupsig.interfaces.protocol.CommonInput;
 import de.upb.crypto.math.serialization.Representation;
 import de.upb.crypto.math.serialization.annotations.ReprUtil;

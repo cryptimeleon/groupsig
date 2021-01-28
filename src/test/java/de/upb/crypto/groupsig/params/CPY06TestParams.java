@@ -1,7 +1,7 @@
 package de.upb.crypto.groupsig.params;
 
-import de.upb.crypto.craco.common.PlainText;
 import de.upb.crypto.craco.common.TestParameterProvider;
+import de.upb.crypto.craco.common.plaintexts.PlainText;
 import de.upb.crypto.craco.enc.sym.streaming.aes.ByteArrayImplementation;
 import de.upb.crypto.groupsig.CPY06.CPY06GroupMembershipList;
 import de.upb.crypto.groupsig.CPY06.CPY06RevocationList;

@@ -1,6 +1,6 @@
 package de.upb.crypto.groupsig;
 
-import de.upb.crypto.craco.common.PlainText;
+import de.upb.crypto.craco.common.plaintexts.PlainText;
 import de.upb.crypto.groupsig.common.*;
 
 /**

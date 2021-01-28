@@ -68,7 +68,7 @@ public class GroupSignatureTester {
     public class AfterJoin {
 
         @ParameterizedTest
-        @MethodSource("de.upb.crypto.groupsig.de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
+        @MethodSource("de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
         public void testSignAndVerify(GroupSignatureTestParam param) {
             if (param.getScheme() == null) {
                 fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. Please implement" +
@@ -92,7 +92,7 @@ public class GroupSignatureTester {
         public class AfterSign {
 
             @ParameterizedTest
-            @MethodSource("de.upb.crypto.groupsig.de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
+            @MethodSource("de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
             public void testOpen(GroupSignatureTestParam param) {
                 if (param.getScheme() == null) {
                     fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
@@ -119,7 +119,7 @@ public class GroupSignatureTester {
             }
 
             @ParameterizedTest
-            @MethodSource("de.upb.crypto.groupsig.de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
+            @MethodSource("de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
             public void testOpenVerify(GroupSignatureTestParam param) {
                 if (param.getScheme() == null) {
                     fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
@@ -159,7 +159,7 @@ public class GroupSignatureTester {
             }
 
             @ParameterizedTest
-            @MethodSource("de.upb.crypto.groupsig.de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
+            @MethodSource("de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
             public void testClaimAndClaimVerify(GroupSignatureTestParam param) {
                 if (param.getScheme() == null) {
                     fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
@@ -194,7 +194,7 @@ public class GroupSignatureTester {
             }
 
             @ParameterizedTest
-            @MethodSource("de.upb.crypto.groupsig.de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
+            @MethodSource("de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
             public void testRevealAndTrace(GroupSignatureTestParam param) {
                 if (param.getScheme() == null) {
                     fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
@@ -232,7 +232,7 @@ public class GroupSignatureTester {
             }
 
             @ParameterizedTest
-            @MethodSource("de.upb.crypto.groupsig.de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
+            @MethodSource("de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
             public void testProveEqualityAndProveEqualityVerify(GroupSignatureTestParam param) {
                 if (param.getScheme() == null) {
                     fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
@@ -281,7 +281,7 @@ public class GroupSignatureTester {
     class RepresentationTests {
 
         @ParameterizedTest
-        @MethodSource("de.upb.crypto.groupsig.de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
+        @MethodSource("de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
         public void testGetOpenerKey(GroupSignatureTestParam param) {
             if (param.getScheme() == null) {
                 fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
@@ -298,7 +298,7 @@ public class GroupSignatureTester {
         }
 
         @ParameterizedTest
-        @MethodSource("de.upb.crypto.groupsig.de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
+        @MethodSource("de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
         public void testGetIssuerKey(GroupSignatureTestParam param) {
             if (param.getScheme() == null) {
                 fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
@@ -314,7 +314,7 @@ public class GroupSignatureTester {
         }
 
         @ParameterizedTest
-        @MethodSource("de.upb.crypto.groupsig.de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
+        @MethodSource("de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
         public void testGetPlainText(GroupSignatureTestParam param) {
             if (param.getScheme() == null) {
                 fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
@@ -331,7 +331,7 @@ public class GroupSignatureTester {
         }
 
         @ParameterizedTest
-        @MethodSource("de.upb.crypto.groupsig.de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
+        @MethodSource("de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
         public void testGetMemberKey(GroupSignatureTestParam param) {
             if (param.getScheme() == null) {
                 fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
@@ -355,7 +355,7 @@ public class GroupSignatureTester {
         }
 
         @ParameterizedTest
-        @MethodSource("de.upb.crypto.groupsig.de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
+        @MethodSource("de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
         public void testGetGmlEntry(GroupSignatureTestParam param) {
             if (param.getScheme() == null) {
                 fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
@@ -384,7 +384,7 @@ public class GroupSignatureTester {
         }
 
         @ParameterizedTest
-        @MethodSource("de.upb.crypto.groupsig.de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
+        @MethodSource("de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
         public void testGetGroupMembershipList(GroupSignatureTestParam param) {
             if (param.getScheme() == null) {
                 fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
@@ -408,7 +408,7 @@ public class GroupSignatureTester {
         }
 
         @ParameterizedTest
-        @MethodSource("de.upb.crypto.groupsig.de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
+        @MethodSource("de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
         public void testGetRevocationListEntry(GroupSignatureTestParam param) {
             if (param.getScheme() == null) {
                 fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
@@ -448,7 +448,7 @@ public class GroupSignatureTester {
         }
 
         @ParameterizedTest
-        @MethodSource("de.upb.crypto.groupsig.de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
+        @MethodSource("de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
         public void testGetRevocationList(GroupSignatureTestParam param) {
             if (param.getScheme() == null) {
                 fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
@@ -479,7 +479,7 @@ public class GroupSignatureTester {
         }
 
         @ParameterizedTest
-        @MethodSource("de.upb.crypto.groupsig.de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
+        @MethodSource("de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
         public void testGetOpenProof(GroupSignatureTestParam param) {
             if (param.getScheme() == null) {
                 fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
@@ -518,7 +518,7 @@ public class GroupSignatureTester {
         }
 
         @ParameterizedTest
-        @MethodSource("de.upb.crypto.groupsig.de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
+        @MethodSource("de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
         public void testGetClaimProof(GroupSignatureTestParam param) {
             if (param.getScheme() == null) {
                 fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
@@ -559,7 +559,7 @@ public class GroupSignatureTester {
         }
 
         @ParameterizedTest
-        @MethodSource("de.upb.crypto.groupsig.de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
+        @MethodSource("de.upb.crypto.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
         public void testGetEqualityProof(GroupSignatureTestParam param) {
             if (param.getScheme() == null) {
                 fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
@@ -610,11 +610,11 @@ public class GroupSignatureTester {
 
     public static Stream<GroupSignatureTestParam> getGroupSignatureTestParams() {
         // Get all classes that implement GroupSignatureScheme in Craco
-        Reflections reflectionCraco = new Reflections("de.upb.crypto.craco");
+        Reflections reflectionCraco = new Reflections("de.upb.crypto.groupsig");
         Set<Class<? extends GroupSignatureScheme>> schemeClasses =
                 reflectionCraco.getSubTypesOf(GroupSignatureScheme.class);
         // Get all classes that provide parameters for the group signature scheme tests
-        Reflections reflectionParams = new Reflections("de.upb.crypto.groupsig.de.upb.crypto.groupsig.params");
+        Reflections reflectionParams = new Reflections("de.upb.crypto.groupsig.params");
         Set<Class<? extends TestParameterProvider>> paramProviderClasses =
                 reflectionParams.getSubTypesOf(TestParameterProvider.class);
 
@@ -628,8 +628,8 @@ public class GroupSignatureTester {
                 System.out.println("Not able to instantiate GroupSignatureTestParameterProvider " + providerClass
                                 + " because of " + e);
             } catch (ClassCastException e) {
-                System.out.println("Not able to cast test de.upb.crypto.groupsig.params provided by " + providerClass
-                        + " to de.upb.crypto.groupsig.GroupSignatureTestParam");
+                System.out.println("Not able to cast test params provided by " + providerClass
+                        + " to GroupSignatureTestParam");
             }
         }
 

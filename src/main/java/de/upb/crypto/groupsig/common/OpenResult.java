@@ -1,7 +1,5 @@
 package de.upb.crypto.groupsig.common;
 
-import de.upb.crypto.groupsig.interfaces.*;
-
 /**
  * Contains information about the result of executing
  * {@link GroupSignatureScheme#open(GroupSignature, OpenerKey, GroupMembershipList, RevocationList)}.

@@ -1,6 +1,7 @@
 package de.upb.crypto.groupsig;
 
-import de.upb.crypto.craco.common.interfaces.PlainText;
+import de.upb.crypto.craco.common.TestParameterProvider;
+import de.upb.crypto.craco.common.plaintexts.PlainText;
 import de.upb.crypto.groupsig.common.*;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -35,8 +36,6 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  *
  * <p>If you want to test methods outside of the {@link GroupSignatureScheme} interface, you will have to create a new
  * testing class. Extending this tester class seems to lead to double execution of the inherited tests.
- *
- * @author Raphael Heitjohann
  */
 public class GroupSignatureTester {
 

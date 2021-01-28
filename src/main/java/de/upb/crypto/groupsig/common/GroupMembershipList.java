@@ -6,8 +6,6 @@ import de.upb.crypto.math.serialization.Representable;
  * The group member ship list contains information about each group member in the form of {@link GMLEntry} instances.
  *
  * <p>It can be restored from its representation via the appropriate method from {@link GroupSignatureScheme}.
- *
- * @author Raphael Heitjohann
  */
 public interface GroupMembershipList extends Representable {
 

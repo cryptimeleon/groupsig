@@ -7,8 +7,6 @@ import de.upb.crypto.math.serialization.Representable;
  * {@link RevocationListEntry} instances.
  *
  * <p>It can be restored from its representation via the appropriate method from {@link GroupSignatureScheme}.
- *
- * @author Raphael Heitjohann
  */
 public interface RevocationList extends Representable {
 

@@ -7,8 +7,6 @@ import de.upb.crypto.math.serialization.Representable;
  * It is created during the joining process for that specific member and added to the {@link GroupMembershipList}.
  *
  * <p>It can be restored from its representation via the appropriate method from {@link GroupSignatureScheme}.
- *
- * @author Raphael Heitjohann
  */
 public interface GMLEntry extends Representable {
 }

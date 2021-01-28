@@ -7,8 +7,6 @@ import de.upb.crypto.groupsig.interfaces.*;
  * {@link GroupSignatureScheme#open(GroupSignature, OpenerKey, GroupMembershipList, RevocationList)}.
  * Specifically, the revealed member identity and, if supported by the scheme, a proof that the opening was done
  * correctly.
- *
- * @author Raphael Heitjohann
  */
 public class OpenResult {
 

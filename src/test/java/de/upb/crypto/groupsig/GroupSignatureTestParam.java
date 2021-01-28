@@ -1,6 +1,6 @@
 package de.upb.crypto.groupsig;
 
-import de.upb.crypto.craco.common.interfaces.PlainText;
+import de.upb.crypto.craco.common.PlainText;
 import de.upb.crypto.groupsig.common.*;
 
 /**
@@ -8,8 +8,6 @@ import de.upb.crypto.groupsig.common.*;
  *
  * <p>If your scheme does not support the {@link GroupSignatureScheme#reveal(GroupMembershipList, Integer, RevocationList)}
  * method, you may set {@code revocationList} to null.
- *
- * @author Raphael Heitjohann
  */
 public class GroupSignatureTestParam {
     private Class<? extends GroupSignatureScheme> clazz;

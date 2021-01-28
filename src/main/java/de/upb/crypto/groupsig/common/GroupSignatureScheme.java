@@ -1,7 +1,6 @@
 package de.upb.crypto.groupsig.common;
 
-import de.upb.crypto.craco.common.interfaces.PlainText;
-import de.upb.crypto.craco.sig.interfaces.Signature;
+import de.upb.crypto.craco.common.plaintexts.PlainText;
 import de.upb.crypto.math.serialization.Representation;
 import de.upb.crypto.math.serialization.StandaloneRepresentable;
 import de.upb.crypto.math.serialization.annotations.RepresentationRestorer;
@@ -19,8 +18,6 @@ import java.util.Collection;
  * <p>[DAR15] Jesus Diaz and David Arroyo and Francisco B. Rodriguez,
  * libgroupsig: An extensible C library for group signatures, Cryptology ePrint Archive, Report 2015/1146,
  * https://eprint.iacr.org/2015/1146.
- *
- * @author Raphael Heitjohann
  */
 public interface GroupSignatureScheme extends StandaloneRepresentable, RepresentationRestorer {
 

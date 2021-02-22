@@ -1,4 +1,4 @@
-## upb.crypto.groupsig
+## Cryptimeleon Groupsig
 **WARNING: This library is meant to be used for prototyping and as a research tool *only*. 
 It has not been sufficiently vetted to use in production**
 

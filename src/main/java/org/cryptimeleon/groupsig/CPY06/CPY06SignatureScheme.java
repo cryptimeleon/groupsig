@@ -277,62 +277,62 @@ public class CPY06SignatureScheme implements GroupSignatureScheme {
     }
 
     @Override
-    public MemberKey getMemberKey(Representation repr) {
+    public MemberKey restoreMemberKey(Representation repr) {
         return new CPY06MemberKey(repr, pp.getBilGroup().getG1(), pp.getZp());
     }
 
     @Override
-    public OpenerKey getOpenerKey(Representation repr) {
+    public OpenerKey restoreOpenerKey(Representation repr) {
         return new CPY06OpenerKey(repr, pp.getZp());
     }
 
     @Override
-    public IssuerKey getIssuerKey(Representation repr) {
+    public IssuerKey restoreIssuerKey(Representation repr) {
         return new CPY06IssuerKey(repr, pp.getZp());
     }
 
     @Override
-    public PlainText getPlainText(Representation repr) {
+    public PlainText restorePlainText(Representation repr) {
         return new ByteArrayImplementation(repr);
     }
 
     @Override
-    public GroupSignature getSignature(Representation repr) {
+    public GroupSignature restoreSignature(Representation repr) {
         return new CPY06Signature(repr, pp.getBilGroup());
     }
 
     @Override
-    public GMLEntry getGmlEntry(Representation repr) {
+    public GMLEntry restoreGmlEntry(Representation repr) {
         return new CPY06GMLEntry(repr, pp.getBilGroup().getG1(), pp.getZp());
     }
 
     @Override
-    public GroupMembershipList getGroupMembershipList(Representation repr) {
+    public GroupMembershipList restoreGroupMembershipList(Representation repr) {
         return new CPY06GroupMembershipList(repr, this);
     }
 
     @Override
-    public RevocationList getRevocationList(Representation repr) {
+    public RevocationList restoreRevocationList(Representation repr) {
         return new CPY06RevocationList(repr, this);
     }
 
     @Override
-    public RevocationListEntry getRevocationListEntry(Representation repr) {
+    public RevocationListEntry restoreRevocationListEntry(Representation repr) {
         return new CPY06RevocationListEntry(repr, pp.getBilGroup().getG1());
     }
 
     @Override
-    public OpenProof getOpenProof(Representation repr) {
+    public OpenProof restoreOpenProof(Representation repr) {
         throw new UnsupportedOperationException("This scheme does not support open proofs");
     }
 
     @Override
-    public ClaimProof getClaimProof(Representation repr) {
+    public ClaimProof restoreClaimProof(Representation repr) {
         throw new UnsupportedOperationException("This scheme does not support claim proofs");
     }
 
     @Override
-    public EqualityProof getEqualityProof(Representation repr) {
+    public EqualityProof restoreEqualityProof(Representation repr) {
         throw new UnsupportedOperationException("This scheme does not support equality proofs");
     }
 

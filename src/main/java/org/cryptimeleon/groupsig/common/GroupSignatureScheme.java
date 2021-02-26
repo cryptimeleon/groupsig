@@ -201,29 +201,29 @@ public interface GroupSignatureScheme extends StandaloneRepresentable, Represent
     Boolean proveEqualityVerify(EqualityProof equalityProof, Collection<GroupSignature> signatures)
             throws UnsupportedOperationException;
 
-    MemberKey getMemberKey(Representation repr);
+    MemberKey restoreMemberKey(Representation repr);
 
-    OpenerKey getOpenerKey(Representation repr);
+    OpenerKey restoreOpenerKey(Representation repr);
 
-    IssuerKey getIssuerKey(Representation repr);
+    IssuerKey restoreIssuerKey(Representation repr);
 
-    GroupSignature getSignature(Representation repr);
+    GroupSignature restoreSignature(Representation repr);
 
-    PlainText getPlainText(Representation repr);
+    PlainText restorePlainText(Representation repr);
 
-    GMLEntry getGmlEntry(Representation repr);
+    GMLEntry restoreGmlEntry(Representation repr);
 
-    GroupMembershipList getGroupMembershipList(Representation repr);
+    GroupMembershipList restoreGroupMembershipList(Representation repr);
 
-    RevocationListEntry getRevocationListEntry(Representation repr);
+    RevocationListEntry restoreRevocationListEntry(Representation repr);
 
-    RevocationList getRevocationList(Representation repr);
+    RevocationList restoreRevocationList(Representation repr);
 
-    OpenProof getOpenProof(Representation repr);
+    OpenProof restoreOpenProof(Representation repr);
 
-    ClaimProof getClaimProof(Representation repr);
+    ClaimProof restoreClaimProof(Representation repr);
 
-    EqualityProof getEqualityProof(Representation repr);
+    EqualityProof restoreEqualityProof(Representation repr);
 
     /**
      * Provides an injective mapping of the byte[] to a {@link PlainText} usable with this scheme (which may be a
@@ -248,32 +248,32 @@ public interface GroupSignatureScheme extends StandaloneRepresentable, Represent
      */
     int getMaxNumberOfBytesForMapToPlaintext();
 
-    default Object recreateFromRepresentation(Type type, Representation repr) {
+    default Object restoreFromRepresentation(Type type, Representation repr) {
         if (type instanceof Class) {
             if (MemberKey.class.isAssignableFrom((Class) type)) {
-                return this.getMemberKey(repr);
+                return this.restoreMemberKey(repr);
             } else if (OpenerKey.class.isAssignableFrom((Class) type)) {
-                return this.getOpenerKey(repr);
+                return this.restoreOpenerKey(repr);
             } else if (IssuerKey.class.isAssignableFrom((Class) type)) {
-                return this.getIssuerKey(repr);
+                return this.restoreIssuerKey(repr);
             } else if (Signature.class.isAssignableFrom((Class) type)) {
-                return this.getSignature(repr);
+                return this.restoreSignature(repr);
             } else if (PlainText.class.isAssignableFrom((Class) type)) {
-                return this.getPlainText(repr);
+                return this.restorePlainText(repr);
             } else if (GMLEntry.class.isAssignableFrom((Class) type)) {
-                return this.getGmlEntry(repr);
+                return this.restoreGmlEntry(repr);
             } else if (GroupMembershipList.class.isAssignableFrom((Class) type)) {
-                return this.getGroupMembershipList(repr);
+                return this.restoreGroupMembershipList(repr);
             } else if (RevocationListEntry.class.isAssignableFrom((Class) type)) {
-                return this.getRevocationListEntry(repr);
+                return this.restoreRevocationListEntry(repr);
             } else if (RevocationList.class.isAssignableFrom((Class) type)) {
-                return this.getRevocationList(repr);
+                return this.restoreRevocationList(repr);
             } else if (OpenProof.class.isAssignableFrom((Class) type)) {
-                return this.getOpenProof(repr);
+                return this.restoreOpenProof(repr);
             } else if (ClaimProof.class.isAssignableFrom((Class) type)) {
-                return this.getClaimProof(repr);
+                return this.restoreClaimProof(repr);
             } else if (EqualityProof.class.isAssignableFrom((Class) type)) {
-                return this.getEqualityProof(repr);
+                return this.restoreEqualityProof(repr);
             }
         }
         throw new IllegalArgumentException("Cannot recreate object of type: " + type.getTypeName());

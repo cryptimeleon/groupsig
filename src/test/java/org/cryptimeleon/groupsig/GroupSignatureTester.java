@@ -3,7 +3,6 @@ package org.cryptimeleon.groupsig;
 import org.cryptimeleon.craco.common.TestParameterProvider;
 import org.cryptimeleon.craco.common.plaintexts.PlainText;
 import org.cryptimeleon.groupsig.common.*;
-import org.cryptimeleon.groupsig.common.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -290,7 +289,7 @@ public class GroupSignatureTester {
                         "Please implement a corresponding TestParameterProvider under " +
                         "test/org.cryptimeleon.groupsig.org.cryptimeleon.groupsig.params");
             }
-            OpenerKey reconstructedOpenerKey = param.getScheme().getOpenerKey(
+            OpenerKey reconstructedOpenerKey = param.getScheme().restoreOpenerKey(
                     param.getOpenerKey().getRepresentation()
             );
             Assertions.assertEquals(
@@ -307,7 +306,7 @@ public class GroupSignatureTester {
                         "Please implement a corresponding TestParameterProvider under " +
                         "test/org.cryptimeleon.groupsig.org.cryptimeleon.groupsig.params");
             }
-            IssuerKey reconstructedIssuerKey = param.getScheme().getIssuerKey(
+            IssuerKey reconstructedIssuerKey = param.getScheme().restoreIssuerKey(
                     param.getIssuerKey().getRepresentation()
             );
             Assertions.assertEquals(
@@ -323,7 +322,7 @@ public class GroupSignatureTester {
                         "Please implement a corresponding TestParameterProvider under " +
                         "test/org.cryptimeleon.groupsig.org.cryptimeleon.groupsig.params");
             }
-            PlainText reconstructedPlainText = param.getScheme().getPlainText(
+            PlainText reconstructedPlainText = param.getScheme().restorePlainText(
                     param.getPlainText1().getRepresentation()
             );
             assertEquals(
@@ -347,7 +346,7 @@ public class GroupSignatureTester {
                 assumeFalse(true);
             }
             System.out.println("Testing representation");
-            MemberKey reconstructuredMemberKey = param.getScheme().getMemberKey(
+            MemberKey reconstructuredMemberKey = param.getScheme().restoreMemberKey(
                     memberKey.getRepresentation()
             );
             assertEquals(
@@ -378,7 +377,7 @@ public class GroupSignatureTester {
                 assumeTrue(false,
                         "GML entry for member key not retrievable from group membership list");
             }
-            GMLEntry reconstructedGmlEntry = param.getScheme().getGmlEntry(gmlEntry.getRepresentation());
+            GMLEntry reconstructedGmlEntry = param.getScheme().restoreGmlEntry(gmlEntry.getRepresentation());
             assertEquals(
                     gmlEntry, reconstructedGmlEntry,
                     "Reconstructed GML entry does not match actual GML entry"
@@ -400,7 +399,7 @@ public class GroupSignatureTester {
                 assumeFalse(true);
             }
             System.out.println("Testing representation");
-            GroupMembershipList reconstructedGml = param.getScheme().getGroupMembershipList(
+            GroupMembershipList reconstructedGml = param.getScheme().restoreGroupMembershipList(
                     param.getGroupMembershipList().getRepresentation()
             );
             Assertions.assertEquals(
@@ -444,7 +443,7 @@ public class GroupSignatureTester {
             }
             System.out.println("Testing representation");
             Assertions.assertEquals(
-                    revEntry, param.getScheme().getRevocationListEntry(revEntry.getRepresentation()),
+                    revEntry, param.getScheme().restoreRevocationListEntry(revEntry.getRepresentation()),
                     "Reconstructed revocation list entry does not match actual revocation list entry"
             );
         }
@@ -475,7 +474,7 @@ public class GroupSignatureTester {
             System.out.println("Testing representation");
             Assertions.assertEquals(
                     param.getRevocationList(),
-                    param.getScheme().getRevocationList(param.getRevocationList().getRepresentation()),
+                    param.getScheme().restoreRevocationList(param.getRevocationList().getRepresentation()),
                     "Reconstructed revocation list does not match actual revocation list"
             );
         }
@@ -514,7 +513,7 @@ public class GroupSignatureTester {
             System.out.println("Testing representation");
             Assertions.assertEquals(
                     openResult.getOpenProof(),
-                    param.getScheme().getOpenProof(openResult.getOpenProof().getRepresentation()),
+                    param.getScheme().restoreOpenProof(openResult.getOpenProof().getRepresentation()),
                     "Reconstructed open proof does not match actual open proof"
             );
         }
@@ -555,7 +554,7 @@ public class GroupSignatureTester {
             System.out.println("Testing representation");
             Assertions.assertEquals(
                     claimProof,
-                    param.getScheme().getClaimProof(claimProof.getRepresentation()),
+                    param.getScheme().restoreClaimProof(claimProof.getRepresentation()),
                     "Reconstructed claim proof does not match actual claim proof"
             );
         }
@@ -604,7 +603,7 @@ public class GroupSignatureTester {
             System.out.println("Testing representation");
             Assertions.assertEquals(
                     proof,
-                    param.getScheme().getEqualityProof(proof.getRepresentation()),
+                    param.getScheme().restoreEqualityProof(proof.getRepresentation()),
                     "Reconstructed equality proof does not match actual equality proof"
             );
         }

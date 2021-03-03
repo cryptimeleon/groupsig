@@ -25,7 +25,7 @@ cd groupsig
 
 Once you have done this, you can add it as a dependency. You will need to enable dependency resolution for your local Maven repository as well.
 
-## Adding Dependency For Maven
+### Adding Dependency For Maven
 To add the newest Groupsig version as a dependency, add this to your project's POM:
 
 ```xml

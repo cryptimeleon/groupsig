@@ -51,12 +51,12 @@ if (!Boolean.valueOf(System.getProperty("disablesnapshot"))) {
                                 + "' exists remotely but not locally. Please check it out yourself before building.")
                     }
                 } else {
-                    println(msgPrefix + libPrefix + ": Branch '" + branchThis.getName() + "' does not exist remotely. Using main.")
-                    if (grgitLib.branch.current().getName() == "main") {
-                        println(msgPrefix + libPrefix + ": Branch main is checked out already. Using it.")
+                    println(msgPrefix + libPrefix + ": Branch '" + branchThis.getName() + "' does not exist remotely. Using develop.")
+                    if (grgitLib.branch.current().getName() == "develop") {
+                        println(msgPrefix + libPrefix + ": Branch develop is checked out already. Using it.")
                     } else {
                         if (hasProperty("checkoutIfCloned") && cloned) {
-                            println(msgPrefix + libPrefix + ": Branch main is not checked out. "
+                            println(msgPrefix + libPrefix + ": Branch develop is not checked out. "
                                     + "'checkoutIfCloned' is set. Automatically checking it out.")
                             grgitLib.checkout {
                                 branch = branchThis.getName()
@@ -64,7 +64,7 @@ if (!Boolean.valueOf(System.getProperty("disablesnapshot"))) {
                                 createBranch = true
                             }
                         } else {
-                            throw new GradleException(msgPrefix + libPrefix + ": Branch main exists but is not checked out. "
+                            throw new GradleException(msgPrefix + libPrefix + ": Branch develop exists but is not checked out. "
                                     + "Please check it out yourself before building.")
                         }
                     }

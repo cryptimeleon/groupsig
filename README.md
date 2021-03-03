@@ -1,9 +1,11 @@
 ## Cryptimeleon Groupsig
-**WARNING: This library is meant to be used for prototyping and as a research tool *only*. 
-It has not been sufficiently vetted to use in production**
 
-This library offers interfaces and tests useful for implementing group signatures as well as example implementations in Java 8.
+The Groupsig library offers interfaces and tests useful for implementing group signatures as well as example implementations in Java 8.
 The interfaces have largely been derived from [DiaArrRod15].
+
+## Security Disclaimer
+**WARNING: This library is meant to be used for prototyping and as a research tool *only*. It has not been sufficiently vetted for use in security-critical production environments. All implementations are to be considered experimental.**
+
 
 ## Implementations
 We are currently working on implementing the traceable group signature from [ChoParYun06].

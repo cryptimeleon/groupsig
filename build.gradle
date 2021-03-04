@@ -4,20 +4,27 @@ plugins {
 }
 
 group 'org.cryptimeleon'
-version '0.0.1' + (Boolean.valueOf(System.getProperty("disablesnapshot")) ? "" : "-SNAPSHOT")
+archivesBaseName = project.name
+boolean isRelease = project.hasProperty("release")
+version = '0.0.1'  + (isRelease ? "" : "-SNAPSHOT")
 
 repositories {
     mavenCentral()
 }
 
+def mathVersionNoSuffix = '1.0.0'
+def cracoVersionNoSuffix = '1.0.0'
+
 dependencies {
 
-    implementation group: 'org.cryptimeleon', name: 'craco', version: '1.0.0' + (Boolean.valueOf(System.getProperty("disablesnapshot")) ? "" : "-SNAPSHOT")
-    implementation group: 'org.cryptimeleon', name: 'math', version: '1.0.0' + (Boolean.valueOf(System.getProperty("disablesnapshot")) ? "" : "-SNAPSHOT")
+    def cracoVersion = cracoVersionNoSuffix + (isRelease ? "" : "-SNAPSHOT")
+
+    implementation group: 'org.cryptimeleon', name: 'craco', version: cracoVersion
+    implementation group: 'org.cryptimeleon', name: 'math', version: mathVersionNoSuffix + (isRelease ? "" : "-SNAPSHOT")
 
 
     // For tests
-    testImplementation(group: 'org.cryptimeleon', name: 'craco', version:'1.0.0' + (Boolean.valueOf(System.getProperty("disablesnapshot")) ? "" : "-SNAPSHOT")) {
+    testImplementation(group: 'org.cryptimeleon', name: 'craco', version: cracoVersion) {
         capabilities {
             requireCapability("org.cryptimeleon:craco-tests")
         }
@@ -51,4 +58,18 @@ test {
             println('\n' + ('-' * repeatLength) + '\n' + startItem + output + endItem + '\n' + ('-' * repeatLength))
         }
     }
+}
+
+task javadocLatex(type: Javadoc) {
+    source = sourceSets.main.allJava
+    classpath = sourceSets.main.runtimeClasspath
+    // link to math and craco javadocs
+    options {
+        links "https://javadoc.io/doc/org.cryptimeleon/math/" + mathVersionNoSuffix, "https://javadoc.io/doc/org.cryptimeleon/craco/" + cracoVersionNoSuffix
+    }
+    // enable latex rendering via mathjax
+    options.addBooleanOption("-allow-script-in-comments", true)
+    options.header = "<script type\"text/javascript&\" src=\"" +
+            "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?" +
+            "config=TeX-MML-AM_CHTML\"></script>"
 }

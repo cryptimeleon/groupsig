@@ -2,7 +2,9 @@ package org.cryptimeleon.groupsig.CPY06;
 
 import org.cryptimeleon.craco.common.ByteArrayImplementation;
 import org.cryptimeleon.craco.common.plaintexts.PlainText;
+import org.cryptimeleon.groupsig.CPY06.issuing_protocol.CPY06IssuerCommonInput;
 import org.cryptimeleon.groupsig.CPY06.issuing_protocol.CPY06IssuingProtocol;
+import org.cryptimeleon.groupsig.CPY06.issuing_protocol.CPY06IssuingProtocolIssuerInstance;
 import org.cryptimeleon.groupsig.CPY06.issuing_protocol.CPY06IssuingProtocolUserInstance;
 import org.cryptimeleon.groupsig.common.*;
 import org.cryptimeleon.math.hash.ByteAccumulator;
@@ -39,15 +41,20 @@ public class CPY06SignatureScheme implements GroupSignatureScheme {
     @Override
     public MemberKey joinMember() {
         CPY06IssuingProtocol protocol = new CPY06IssuingProtocol();
+        // No secret input required for user here
         CPY06IssuingProtocolUserInstance userInstance =
                 (CPY06IssuingProtocolUserInstance) protocol.instantiateUser(pp, null);
-        // TODO (rh): Add protocol
+        // TODO (rh): Add protocol execution
         return null;
     }
 
     @Override
     public void joinIssuer(IssuerKey issuerKey, GroupMembershipList gml) {
-        // TODO (rh): Add protocol
+        CPY06IssuingProtocol protocol = new CPY06IssuingProtocol();
+        CPY06IssuerCommonInput commonInput = new CPY06IssuerCommonInput(pp, gml.getNextNewUserId());
+        CPY06IssuingProtocolIssuerInstance issuerInstance =
+                (CPY06IssuingProtocolIssuerInstance) protocol.instantiateIssuer(commonInput, (CPY06IssuerKey) issuerKey);
+        // TODO (rh): Add protocol execution
     }
 
     @Override

@@ -7,16 +7,17 @@ import org.cryptimeleon.math.serialization.annotations.ReprUtil;
 import org.cryptimeleon.math.serialization.annotations.Represented;
 import org.cryptimeleon.math.structures.groups.GroupElement;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
 public class CPY06GroupMembershipList implements GroupMembershipList {
 
-    @Represented(restorer = "id -> entry")
-    private HashMap<Integer, CPY06GMLEntry> entries;
+    @Represented(restorer = "entry")
+    private ArrayList<CPY06GMLEntry> entries;
 
     public CPY06GroupMembershipList() {
-        this.entries = new HashMap<>();
+        this.entries = new ArrayList<>();
     }
 
     public CPY06GroupMembershipList(Representation repr, CPY06SignatureScheme scheme) {
@@ -25,7 +26,7 @@ public class CPY06GroupMembershipList implements GroupMembershipList {
 
     @Override
     public void put(GMLEntry e) {
-        entries.put(((CPY06GMLEntry) e).getIdentity(), (CPY06GMLEntry) e);
+        entries.add((CPY06GMLEntry) e);
     }
 
     @Override
@@ -33,8 +34,13 @@ public class CPY06GroupMembershipList implements GroupMembershipList {
         return entries.get(id);
     }
 
+    @Override
+    public Integer getNextNewUserId() {
+        return entries.size();
+    }
+
     public Integer findUserIdFor(GroupElement A) {
-        for (CPY06GMLEntry e : entries.values()) {
+        for (CPY06GMLEntry e : entries) {
             if (A.equals(e.getA()))
                 return e.getIdentity();
         }

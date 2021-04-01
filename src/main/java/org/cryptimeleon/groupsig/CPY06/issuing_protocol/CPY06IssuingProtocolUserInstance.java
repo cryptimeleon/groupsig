@@ -1,7 +1,14 @@
 package org.cryptimeleon.groupsig.CPY06.issuing_protocol;
 
+import org.cryptimeleon.craco.protocols.CommonInput;
+import org.cryptimeleon.craco.protocols.SecretInput;
+import org.cryptimeleon.craco.protocols.arguments.fiatshamir.FiatShamirProof;
+import org.cryptimeleon.craco.protocols.arguments.fiatshamir.FiatShamirProofSystem;
 import org.cryptimeleon.groupsig.CPY06.CPY06MemberKey;
 import org.cryptimeleon.groupsig.CPY06.CPY06PublicParameters;
+import org.cryptimeleon.groupsig.CPY06.issuing_protocol.pok.CPY06XiProof;
+import org.cryptimeleon.groupsig.CPY06.issuing_protocol.pok.CPY06XiProofCommonInput;
+import org.cryptimeleon.groupsig.CPY06.issuing_protocol.pok.CPY06XiProofSecretInput;
 import org.cryptimeleon.groupsig.common.protocol.IssuingProtocol;
 import org.cryptimeleon.groupsig.common.protocol.IssuingProtocolInstance;
 import org.cryptimeleon.math.serialization.Representation;
@@ -17,7 +24,7 @@ public class CPY06IssuingProtocolUserInstance implements IssuingProtocolInstance
     
     private Zp.ZpElement y, r, u, v, x, t;
 
-    private GroupElement Pi, A;
+    private GroupElement Pi, A, I;
 
     private Integer identity;
 
@@ -45,21 +52,25 @@ public class CPY06IssuingProtocolUserInstance implements IssuingProtocolInstance
     }
 
     public GroupElement createXiGenerationAnnouncement() {
-        // First step from protocol in [NguSaf04]
-        // TODO (rh): P and H from [NguSaf04] are P_1 and Z in [org.cryptimeleon.groupsig.CPY06]?
         Zp zp = (Zp) pp.getBilGroup().getZn();
         y = zp.getUniformlyRandomUnit();
         r = zp.getUniformlyRandomUnit();
+        I = pp.getP1().pow(y).op(pp.getZ().pow(r)).compute();
 
-        return pp.getP1().pow(y).op(pp.getZ().pow(r)).compute();
+        return I;
     }
 
     public CPY06XiGenerationResult createXiGenerationResult() {
         x = u.mul(y).add(v);
         Pi = pp.getP1().pow(x);
-        // TODO (rh): Generate PoK for x_i and ur
-        //  Just a Schnorr for two values, see [CamMic98], Section 4.2
-        return new CPY06XiGenerationResult(Pi, null);
+
+        FiatShamirProofSystem proofSystem = new FiatShamirProofSystem(new CPY06XiProof(pp));
+
+        CommonInput commonInput = new CPY06XiProofCommonInput(pp, Pi, I, u, v);
+        // Calculation reveals rPrime = ur
+        SecretInput secretInput = new CPY06XiProofSecretInput(x, u.mul(r));
+        FiatShamirProof proof = proofSystem.createProof(commonInput, secretInput);
+        return new CPY06XiGenerationResult(Pi, proof);
     }
 
     public Boolean verifyMembershipCert(CPY06MembershipCert membershipCert) {
@@ -80,9 +91,11 @@ public class CPY06IssuingProtocolUserInstance implements IssuingProtocolInstance
     public Representation nextMessage(Representation received) {
         switch (state) {
             case START:
+                // First step from protocol in [NguSaf04]
                 // Send I = yP + rH as in [NguSaf04]
                 return createXiGenerationAnnouncement().getRepresentation();
             case GENERATING_XI:
+                // Third and fourth steps from protocol in [NguSaf04]
                 // Receive u, v from Issuer
                 CPY06XiGenerationChallenge xiGenerationChallenge =
                         new CPY06XiGenerationChallenge(received, (Zp) pp.getBilGroup().getZn());
@@ -91,6 +104,7 @@ public class CPY06IssuingProtocolUserInstance implements IssuingProtocolInstance
                 // Generate x_i and send x_i * P_1 as well as PoK
                 return createXiGenerationResult().getRepresentation();
             case VERIFYING_KEY:
+                // Third step from protocol in [CPY06]
                 CPY06MembershipCert membershipCert = 
                         new CPY06MembershipCert(received, pp.getBilGroup().getG1(), (Zp) pp.getBilGroup().getZn());
                 if (verifyMembershipCert(membershipCert)) {

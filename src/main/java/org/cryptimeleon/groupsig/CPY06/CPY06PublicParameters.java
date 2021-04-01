@@ -1,6 +1,6 @@
 package org.cryptimeleon.groupsig.CPY06;
 import org.cryptimeleon.craco.common.PublicParameters;
-import org.cryptimeleon.groupsig.common.protocol.CommonInput;
+import org.cryptimeleon.craco.protocols.CommonInput;
 import org.cryptimeleon.math.serialization.Representation;
 import org.cryptimeleon.math.serialization.annotations.ReprUtil;
 import org.cryptimeleon.math.serialization.annotations.Represented;

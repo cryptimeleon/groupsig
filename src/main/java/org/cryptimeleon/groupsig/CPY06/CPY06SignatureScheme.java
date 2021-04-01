@@ -1,7 +1,7 @@
 package org.cryptimeleon.groupsig.CPY06;
 
+import org.cryptimeleon.craco.common.ByteArrayImplementation;
 import org.cryptimeleon.craco.common.plaintexts.PlainText;
-import org.cryptimeleon.craco.enc.sym.streaming.aes.ByteArrayImplementation;
 import org.cryptimeleon.groupsig.CPY06.issuing_protocol.CPY06IssuingProtocol;
 import org.cryptimeleon.groupsig.CPY06.issuing_protocol.CPY06IssuingProtocolUserInstance;
 import org.cryptimeleon.groupsig.common.*;
@@ -13,15 +13,14 @@ import org.cryptimeleon.math.serialization.annotations.Represented;
 import org.cryptimeleon.math.structures.groups.GroupElement;
 import org.cryptimeleon.math.structures.groups.elliptic.BilinearMap;
 import org.cryptimeleon.math.structures.rings.zn.Zp;
-import org.cryptimeleon.groupsig.common.*;
 
 import java.util.Collection;
 import java.util.Objects;
 
 /**
- * Implements the traceable group signature scheme from [org.cryptimeleon.groupsig.CPY06].
+ * Implements the traceable group signature scheme from [CPY06].
  *
- * [org.cryptimeleon.groupsig.CPY06] Choi, Seung & Park, Kunsoo & Yung, Moti. (2006).
+ * [CPY06] Choi, Seung & Park, Kunsoo & Yung, Moti. (2006).
  * Short Traceable Signatures Based on Bilinear Pairings.
  */
 public class CPY06SignatureScheme implements GroupSignatureScheme {

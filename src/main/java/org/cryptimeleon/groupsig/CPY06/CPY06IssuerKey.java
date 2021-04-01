@@ -1,14 +1,13 @@
 package org.cryptimeleon.groupsig.CPY06;
 
 import org.cryptimeleon.groupsig.common.IssuerKey;
-import org.cryptimeleon.groupsig.common.protocol.SecretInput;
 import org.cryptimeleon.math.serialization.Representation;
 import org.cryptimeleon.math.serialization.annotations.ReprUtil;
 import org.cryptimeleon.math.structures.rings.zn.Zp;
 
 import java.util.Objects;
 
-public class CPY06IssuerKey extends CPY06ManagerKey implements IssuerKey, SecretInput {
+public class CPY06IssuerKey extends CPY06ManagerKey implements IssuerKey {
     public CPY06IssuerKey(Zp.ZpElement gamma, Zp.ZpElement zeta1, Zp.ZpElement zeta2) {
         super(gamma, zeta1, zeta2);
     }

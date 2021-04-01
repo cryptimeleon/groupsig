@@ -1,5 +1,9 @@
 package org.cryptimeleon.groupsig.common.protocol;
 
+import org.cryptimeleon.craco.protocols.CommonInput;
+import org.cryptimeleon.craco.protocols.SecretInput;
+import org.cryptimeleon.craco.protocols.TwoPartyProtocol;
+
 public interface IssuingProtocol extends TwoPartyProtocol {
 
     String USER_ROLE = "user";

@@ -1,14 +1,14 @@
 package org.cryptimeleon.groupsig.CPY06.issuing_protocol;
 
+import org.cryptimeleon.craco.protocols.CommonInput;
+import org.cryptimeleon.craco.protocols.SecretInput;
 import org.cryptimeleon.groupsig.CPY06.CPY06IssuerKey;
 import org.cryptimeleon.groupsig.CPY06.CPY06PublicParameters;
-import org.cryptimeleon.groupsig.common.protocol.CommonInput;
 import org.cryptimeleon.groupsig.common.protocol.IssuingProtocol;
 import org.cryptimeleon.groupsig.common.protocol.IssuingProtocolInstance;
-import org.cryptimeleon.groupsig.common.protocol.SecretInput;
 
 /**
- * The member key issuing protocol in [org.cryptimeleon.groupsig.CPY06] is partially based on the join protocol from [NguSaf04], Section 4.2.
+ * The member key issuing protocol in [CPY06] is partially based on the join protocol from [NguSaf04], Section 4.2.
  * Their protocol is used to choose a random non-adaptive x_i.
  *
  * [NguSaf04] Nguyen, Lan and Safavi-Naini, Rei

@@ -14,10 +14,13 @@ import org.cryptimeleon.math.serialization.annotations.ReprUtil;
 import org.cryptimeleon.math.serialization.annotations.Represented;
 import org.cryptimeleon.math.structures.groups.GroupElement;
 import org.cryptimeleon.math.structures.groups.elliptic.BilinearMap;
+import org.cryptimeleon.math.structures.rings.zn.Zn;
 import org.cryptimeleon.math.structures.rings.zn.Zp;
 
 import java.util.Collection;
 import java.util.Objects;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Implements the traceable group signature scheme from [CPY06].
@@ -39,22 +42,37 @@ public class CPY06SignatureScheme implements GroupSignatureScheme {
     }
 
     @Override
-    public MemberKey joinMember() {
+    public MemberKey joinMember(BlockingQueue<Representation> received, BlockingQueue<Representation> sent)
+            throws InterruptedException {
         CPY06IssuingProtocol protocol = new CPY06IssuingProtocol();
         // No secret input required for user here
         CPY06IssuingProtocolUserInstance userInstance =
                 (CPY06IssuingProtocolUserInstance) protocol.instantiateUser(pp, null);
-        // TODO (rh): Add protocol execution
-        return null;
+        // user starts
+        sent.offer(userInstance.nextMessage(null));
+        while (!userInstance.hasTerminated()) {
+            Representation nextReceived = received.poll(5, TimeUnit.SECONDS);
+            Representation nextSent = userInstance.nextMessage(nextReceived);
+            // last one we don't send anything (just verify cert), so need to check for null
+            if (nextSent != null) {
+                sent.offer(nextSent , 5, TimeUnit.SECONDS);
+            }
+        }
+        return userInstance.getResultingMemberKey();
     }
 
     @Override
-    public void joinIssuer(IssuerKey issuerKey, GroupMembershipList gml) {
+    public void joinIssuer(IssuerKey issuerKey, GroupMembershipList gml, BlockingQueue<Representation> received,
+                           BlockingQueue<Representation> sent) throws InterruptedException {
         CPY06IssuingProtocol protocol = new CPY06IssuingProtocol();
         CPY06IssuerCommonInput commonInput = new CPY06IssuerCommonInput(pp, gml.getNextNewUserId());
         CPY06IssuingProtocolIssuerInstance issuerInstance =
                 (CPY06IssuingProtocolIssuerInstance) protocol.instantiateIssuer(commonInput, (CPY06IssuerKey) issuerKey);
-        // TODO (rh): Add protocol execution
+        while (!issuerInstance.hasTerminated()) {
+            Representation nextReceived = received.poll(5, TimeUnit.SECONDS);
+            sent.offer(issuerInstance.nextMessage(nextReceived), 5, TimeUnit.SECONDS);
+        }
+        gml.put(issuerInstance.getGroupMembershipListEntry());
     }
 
     @Override
@@ -209,9 +227,9 @@ public class CPY06SignatureScheme implements GroupSignatureScheme {
         CPY06ManagerKey cpy06ManagerKey = (CPY06OpenerKey) openerKey;
         CPY06GroupMembershipList cpy06GroupMembershipList = (CPY06GroupMembershipList) gml;
 
-        // A = T_3 + (zeta_1 * T_1 + zeta_2 * T_2)
+        // A = T_3 - (zeta_1 * T_1 + zeta_2 * T_2)
         GroupElement zeta1T1Pluszeta2T2 = cpy06Signature.getT1().pow(cpy06ManagerKey.getZeta1())
-                .op(cpy06Signature.getT2()).pow(cpy06ManagerKey.getZeta2());
+                .op(cpy06Signature.getT2().pow(cpy06ManagerKey.getZeta2()));
         GroupElement A = cpy06Signature.getT3().op(zeta1T1Pluszeta2T2.inv());
         return new OpenResult(cpy06GroupMembershipList.findUserIdFor(A));
     }

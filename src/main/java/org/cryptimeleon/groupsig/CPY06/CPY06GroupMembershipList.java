@@ -13,7 +13,7 @@ import java.util.Objects;
 
 public class CPY06GroupMembershipList implements GroupMembershipList {
 
-    @Represented(restorer = "entry")
+    @Represented(restorer = "[entry]")
     private ArrayList<CPY06GMLEntry> entries;
 
     public CPY06GroupMembershipList() {

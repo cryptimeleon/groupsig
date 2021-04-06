@@ -6,7 +6,7 @@ plugins {
 group 'org.cryptimeleon'
 archivesBaseName = project.name
 boolean isRelease = project.hasProperty("release")
-version = '0.0.1'  + (isRelease ? "" : "-SNAPSHOT")
+version = '0.1.0'  + (isRelease ? "" : "-SNAPSHOT")
 
 repositories {
     mavenCentral()

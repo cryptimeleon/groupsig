@@ -6,7 +6,9 @@ import org.cryptimeleon.math.serialization.annotations.ReprUtil;
 import org.cryptimeleon.math.serialization.annotations.Represented;
 import org.cryptimeleon.math.structures.groups.GroupElement;
 import org.cryptimeleon.math.structures.groups.elliptic.BilinearGroup;
+import org.cryptimeleon.math.structures.rings.zn.HashIntoZn;
 import org.cryptimeleon.math.structures.rings.zn.HashIntoZp;
+import org.cryptimeleon.math.structures.rings.zn.Zn;
 import org.cryptimeleon.math.structures.rings.zn.Zp;
 
 import java.util.Objects;
@@ -33,7 +35,7 @@ public class CPY06PublicParameters implements PublicParameters, CommonInput {
     @Represented(restorer = "bilGroup::getG1")
     private GroupElement X, Y, Z;
 
-    private HashIntoZp hashFunction;
+    private final HashIntoZp hashFunction;
 
     public CPY06PublicParameters(BilinearGroup bilGroup, GroupElement p1, GroupElement p2, GroupElement q, GroupElement r,
                                GroupElement w, GroupElement x, GroupElement y, GroupElement z) {

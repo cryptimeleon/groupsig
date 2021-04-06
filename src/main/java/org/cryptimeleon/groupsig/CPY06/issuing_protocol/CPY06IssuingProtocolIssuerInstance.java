@@ -15,9 +15,9 @@ import org.cryptimeleon.math.structures.rings.zn.Zp;
 
 public class CPY06IssuingProtocolIssuerInstance implements IssuingProtocolInstance {
 
-    private CPY06IssuingProtocol protocol;
-    private CPY06PublicParameters pp;
-    private CPY06ManagerKey issuerKey;
+    private final CPY06IssuingProtocol protocol;
+    private final CPY06PublicParameters pp;
+    private final CPY06ManagerKey issuerKey;
 
     private State state;
 
@@ -26,7 +26,7 @@ public class CPY06IssuingProtocolIssuerInstance implements IssuingProtocolInstan
     // Pi corresponds to Ci from [CPY06]
     private GroupElement Pi, A, I;
 
-    private Integer memberIdentity;
+    private final Integer memberIdentity;
 
     public enum State {
         SENDING_XI_GENERATION_CHALLENGE,
@@ -53,29 +53,13 @@ public class CPY06IssuingProtocolIssuerInstance implements IssuingProtocolInstan
         return IssuingProtocol.ISSUER_ROLE;
     }
 
-    public CPY06XiGenerationChallenge createXiGenerationChallenge() {
-        Zp zp = (Zp) pp.getBilGroup().getZn();
-        u = zp.getUniformlyRandomUnit();
-        v = zp.getUniformlyRandomUnit();
-        return new CPY06XiGenerationChallenge(u, v);
-    }
-
-    public CPY06MembershipCert createMembershipCert() {
-        // Chose t_i <-R Z_p^*, compute A_i = 1/(t_i + gamma)(x_i * P_1 + Q)
-        //  and send (i, A_i, t_i) to user
-        Zp zp = (Zp) pp.getBilGroup().getZn();
-        t = zp.getUniformlyRandomUnit();
-        A = Pi.op(pp.getQ()).pow(t.add(issuerKey.getGamma().inv()));
-
-        return new CPY06MembershipCert(memberIdentity, A, t);
-    }
-
     @Override
     public Representation nextMessage(Representation received) {
         switch (state) {
             case SENDING_XI_GENERATION_CHALLENGE:
                 // Second step from protocol in [NguSaf04]
                 I = pp.getBilGroup().getG1().restoreElement(received);
+                state = State.GENERATING_MEMBER_KEY;
                 return createXiGenerationChallenge().getRepresentation();
             case GENERATING_MEMBER_KEY:
                 // Second step from protocol in [CPY06]
@@ -88,8 +72,9 @@ public class CPY06IssuingProtocolIssuerInstance implements IssuingProtocolInstan
                 FiatShamirProofSystem proofSystem = new FiatShamirProofSystem(new CPY06XiProof(pp));
                 if (!proofSystem.checkProof(xiProofCommonInput, xiGenerationResult.getProof())) {
                     // TODO: Is null appropriate here to indicate failure of proof checking?
-                    return null;
+                    throw new IllegalArgumentException("Proof verification failed");
                 }
+                state = State.SENT_KEY;
                 return createMembershipCert().getRepresentation();
             case SENT_KEY: // we are done already and should not reach this
                 return null;
@@ -112,5 +97,21 @@ public class CPY06IssuingProtocolIssuerInstance implements IssuingProtocolInstan
         } else {
             throw new IllegalStateException("Protocol is not done yet. Cannot generate GML entry");
         }
+    }
+
+    private CPY06XiGenerationChallenge createXiGenerationChallenge() {
+        Zp zp = pp.getZp();
+        u = zp.getUniformlyRandomUnit();
+        v = zp.getUniformlyRandomUnit();
+        return new CPY06XiGenerationChallenge(u, v);
+    }
+
+    private CPY06MembershipCert createMembershipCert() {
+        // Chose t_i <-R Z_p^*, compute A_i = 1/(t_i + gamma)(x_i * P_1 + Q)
+        //  and send (i, A_i, t_i) to user
+        Zp zp = pp.getZp();
+        t = zp.getUniformlyRandomUnit();
+        A = Pi.op(pp.getQ()).pow(t.add(issuerKey.getGamma()).inv());
+        return new CPY06MembershipCert(memberIdentity, A, t);
     }
 }

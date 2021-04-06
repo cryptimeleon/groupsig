@@ -8,6 +8,7 @@ import org.cryptimeleon.math.serialization.annotations.RepresentationRestorer;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * Interfaces for Group Signatures designed according to [DAR15].
@@ -26,23 +27,33 @@ public interface GroupSignatureScheme extends StandaloneRepresentable, Represent
      * Member part of the join protocol.
      *
      * <p>If the join protocol is an interactive one, this method should be run in parallel with
-     * {@link GroupSignatureScheme#joinIssuer(IssuerKey, GroupMembershipList)}.
+     * {@link GroupSignatureScheme#joinIssuer(IssuerKey, GroupMembershipList, BlockingQueue, BlockingQueue)}.
+     *
+     * @param received Contains the messages sent by the issuer to the member
+     * @param sent Contains the messages sent by the member to the issuer
+     *
+     * @throws InterruptedException if interrupted while waiting for one of the queues
      *
      * @return The issued {@link MemberKey}
      */
-    MemberKey joinMember();
+    MemberKey joinMember(BlockingQueue<Representation> received, BlockingQueue<Representation> sent) throws InterruptedException;
 
     /**
      * Issuer part of the join protocol.
      *
      * <p>If the join protocol is an interactive one, this method should be run in parallel with
-     * {@link GroupSignatureScheme#joinMember()}.
+     * {@link GroupSignatureScheme#joinMember(BlockingQueue, BlockingQueue)}.
      *
      * @param issuerKey The {@link IssuerKey} used to issue the key for the new group member.
      * @param gml The {@link GroupMembershipList} containing information about each member.
      *            Gets updated with new member information if join succeeds.
+     * @param received Contains the messages sent by the member to the issuer
+     * @param sent Contains the messages sent by the issuer to the member
+     *
+     * @throws InterruptedException if interrupted while waiting for one of the queues
      */
-    void joinIssuer(IssuerKey issuerKey, GroupMembershipList gml);
+    void joinIssuer(IssuerKey issuerKey, GroupMembershipList gml, BlockingQueue<Representation> received,
+                    BlockingQueue<Representation> sent) throws InterruptedException;
 
     /**
      * Sign the given plain text with the given member key.

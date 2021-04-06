@@ -16,10 +16,14 @@ public interface GroupSignature extends Signature, RepresentationRestorer {
 
     ClaimProof restoreClaimProof(Representation repr);
 
+    OpenProof restoreOpenProof(Representation repr);
+
     default Object restoreFromRepresentation(Type type, Representation repr) {
         if (type instanceof Class) {
             if (ClaimProof.class.isAssignableFrom((Class) type)) {
                 return this.restoreClaimProof(repr);
+            } else if (OpenProof.class.isAssignableFrom((Class) type)) {
+                return this.restoreOpenProof(repr);
             }
         }
         throw new IllegalArgumentException("Cannot recreate object of type: " + type.getTypeName());

@@ -296,16 +296,6 @@ public class CPY06SignatureScheme implements GroupSignatureScheme {
         return false;
     }
 
-    @Override
-    public EqualityProof proveEquality(MemberKey memberKey, Collection<GroupSignature> signatures) {
-        throw new UnsupportedOperationException("proveEquality does not exist for this scheme.");
-    }
-
-    @Override
-    public Boolean proveEqualityVerify(EqualityProof equalityProof, Collection<GroupSignature> signatures) {
-        throw new UnsupportedOperationException("proveEqualityVerify does not exist for this scheme.");
-    }
-
     public CPY06PublicParameters getPp() {
         return pp;
     }
@@ -358,16 +348,6 @@ public class CPY06SignatureScheme implements GroupSignatureScheme {
     @Override
     public RevocationListEntry restoreRevocationListEntry(Representation repr) {
         return new CPY06RevocationListEntry(repr, pp.getBilGroup().getG1());
-    }
-
-    @Override
-    public OpenProof restoreOpenProof(Representation repr) {
-        throw new UnsupportedOperationException("This scheme does not support open proofs");
-    }
-
-    @Override
-    public EqualityProof restoreEqualityProof(Representation repr) {
-        throw new UnsupportedOperationException("This scheme does not support equality proofs");
     }
 
     @Override

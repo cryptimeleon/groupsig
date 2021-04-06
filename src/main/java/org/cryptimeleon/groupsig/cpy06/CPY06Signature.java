@@ -3,6 +3,7 @@ package org.cryptimeleon.groupsig.cpy06;
 import org.cryptimeleon.craco.protocols.CommonInput;
 import org.cryptimeleon.groupsig.common.ClaimProof;
 import org.cryptimeleon.groupsig.common.GroupSignature;
+import org.cryptimeleon.groupsig.common.OpenProof;
 import org.cryptimeleon.math.serialization.Representation;
 import org.cryptimeleon.math.serialization.annotations.ReprUtil;
 import org.cryptimeleon.math.serialization.annotations.Represented;
@@ -136,5 +137,10 @@ public class CPY06Signature implements GroupSignature, CommonInput {
     @Override
     public ClaimProof restoreClaimProof(Representation repr) {
         return new CPY06ClaimProof(repr, pp, this);
+    }
+
+    @Override
+    public OpenProof restoreOpenProof(Representation repr) {
+        throw new UnsupportedOperationException("The CPY06 scheme does not support open proofs");
     }
 }

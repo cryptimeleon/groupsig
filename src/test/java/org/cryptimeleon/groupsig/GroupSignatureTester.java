@@ -235,50 +235,6 @@ public class GroupSignatureTester {
                 }
                 assertTrue(successful);
             }
-
-            @ParameterizedTest
-            @MethodSource("org.cryptimeleon.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
-            public void testProveEqualityAndProveEqualityVerify(GroupSignatureTestParam param) {
-                if (param.getScheme() == null) {
-                    fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
-                            "Please implement a corresponding TestParameterProvider " +
-                            "under org.cryptimeleon.groupsig.params");
-                }
-                System.out.println("Running join and sign");
-                MemberKey memberKey = join(param);
-                if (memberKey == null) {
-                    System.out.println("Join failed. Member key is null. Skipping test");
-                    assumeFalse(true);
-                }
-                GroupSignature signature1 = param.getScheme().sign(param.getPlainText1(), memberKey);
-                if (!param.getScheme().verify(param.getPlainText1(), signature1)) {
-                    System.out.println("Signing failed. First signature does not verify. Skipping test");
-                    assumeFalse(true);
-                }
-                GroupSignature signature2 = param.getScheme().sign(param.getPlainText1(), memberKey);
-                if (!param.getScheme().verify(param.getPlainText1(), signature2)) {
-                    System.out.println("Signing failed. Second signature does not verify. Skipping test");
-                    assumeFalse(true);
-                }
-                List<GroupSignature> signatures = new LinkedList<>();
-                signatures.add(signature1);
-                signatures.add(signature2);
-                System.out.println("Running proveEquality and proveEqualityVerify");
-                boolean successful;
-                try {
-                    EqualityProof proof = param.getScheme().proveEquality(memberKey, signatures);
-                    successful = param.getScheme().proveEqualityVerify(proof, signatures);
-                } catch (UnsupportedOperationException e) {
-                    System.out.println("ProveEquality/ProveEqualityVerify not supported. Skipping test");
-                    return;
-                }
-                if (!successful) {
-                    System.out.println("Test not successful. If you do not support " +
-                            "proveEquality/proveEqualityVerify, make sure that those methods throw an " +
-                            "UnsupportedOperationException");
-                }
-                assertTrue(successful);
-            }
         }
     }
 
@@ -517,7 +473,7 @@ public class GroupSignatureTester {
             System.out.println("Testing representation");
             Assertions.assertEquals(
                     openResult.getOpenProof(),
-                    param.getScheme().restoreOpenProof(openResult.getOpenProof().getRepresentation()),
+                    signature.restoreOpenProof(openResult.getOpenProof().getRepresentation()),
                     "Reconstructed open proof does not match actual open proof"
             );
         }
@@ -560,55 +516,6 @@ public class GroupSignatureTester {
                     claimProof,
                     signature.restoreClaimProof(claimProof.getRepresentation()),
                     "Reconstructed claim proof does not match actual claim proof"
-            );
-        }
-
-        @ParameterizedTest
-        @MethodSource("org.cryptimeleon.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
-        public void testGetEqualityProof(GroupSignatureTestParam param) {
-            if (param.getScheme() == null) {
-                fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
-                        "Please implement a corresponding TestParameterProvider under " +
-                        "org.cryptimeleon.groupsig.params");
-            }
-            System.out.println("Running join and sign");
-            MemberKey memberKey = join(param);
-            if (memberKey == null) {
-                System.out.println("Join failed. Member key is null. Skipping test");
-                assumeFalse(true);
-            }
-            GroupSignature signature1 = param.getScheme().sign(param.getPlainText1(), memberKey);
-            if (!param.getScheme().verify(param.getPlainText1(), signature1)) {
-                System.out.println("Signing failed. First signature does not verify. Skipping test");
-                assumeFalse(true);
-            }
-            GroupSignature signature2 = param.getScheme().sign(param.getPlainText1(), memberKey);
-            if (!param.getScheme().verify(param.getPlainText1(), signature2)) {
-                System.out.println("Signing failed. Second signature does not verify. Skipping test");
-                assumeFalse(true);
-            }
-            List<GroupSignature> signatures = new LinkedList<>();
-            signatures.add(signature1);
-            signatures.add(signature2);
-            System.out.println("Running proveEquality and proveEqualityVerify");
-            EqualityProof proof;
-            try {
-                proof = param.getScheme().proveEquality(memberKey, signatures);
-                assertNotNull(proof, "Equality proof is null. Either implement proveEquality or throw an "
-                        + "UnsupportedOperationException to indicate that you do not support proveEquality.");
-            } catch (UnsupportedOperationException e) {
-                System.out.println("ProveEquality not supported by scheme. Skipping test assertions");
-                return;
-            }
-            if (!param.getScheme().proveEqualityVerify(proof, signatures)) {
-                System.out.println("ProveEquality failed. Proof does not verify. Skipping test");
-                assumeFalse(true);
-            }
-            System.out.println("Testing representation");
-            Assertions.assertEquals(
-                    proof,
-                    param.getScheme().restoreEqualityProof(proof.getRepresentation()),
-                    "Reconstructed equality proof does not match actual equality proof"
             );
         }
     }

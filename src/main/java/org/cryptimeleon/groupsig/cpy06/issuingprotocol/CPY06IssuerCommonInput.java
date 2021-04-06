@@ -1,7 +1,7 @@
-package org.cryptimeleon.groupsig.CPY06.issuing_protocol;
+package org.cryptimeleon.groupsig.cpy06.issuingprotocol;
 
 import org.cryptimeleon.craco.protocols.CommonInput;
-import org.cryptimeleon.groupsig.CPY06.CPY06PublicParameters;
+import org.cryptimeleon.groupsig.cpy06.CPY06PublicParameters;
 
 public class CPY06IssuerCommonInput implements CommonInput {
 

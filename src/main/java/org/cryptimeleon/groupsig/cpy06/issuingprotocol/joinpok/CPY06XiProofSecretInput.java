@@ -1,4 +1,4 @@
-package org.cryptimeleon.groupsig.CPY06.issuing_protocol.pok;
+package org.cryptimeleon.groupsig.cpy06.issuingprotocol.joinpok;
 
 import org.cryptimeleon.craco.protocols.SecretInput;
 import org.cryptimeleon.math.structures.rings.zn.Zn;

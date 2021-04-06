@@ -558,7 +558,7 @@ public class GroupSignatureTester {
             System.out.println("Testing representation");
             Assertions.assertEquals(
                     claimProof,
-                    param.getScheme().restoreClaimProof(claimProof.getRepresentation()),
+                    signature.restoreClaimProof(claimProof.getRepresentation()),
                     "Reconstructed claim proof does not match actual claim proof"
             );
         }

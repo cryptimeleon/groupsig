@@ -1,11 +1,11 @@
-package org.cryptimeleon.groupsig.CPY06.issuing_protocol;
+package org.cryptimeleon.groupsig.cpy06.issuingprotocol;
 
 import org.cryptimeleon.craco.protocols.CommonInput;
 import org.cryptimeleon.craco.protocols.SecretInput;
-import org.cryptimeleon.groupsig.CPY06.CPY06IssuerKey;
-import org.cryptimeleon.groupsig.CPY06.CPY06PublicParameters;
 import org.cryptimeleon.groupsig.common.protocol.IssuingProtocol;
 import org.cryptimeleon.groupsig.common.protocol.IssuingProtocolInstance;
+import org.cryptimeleon.groupsig.cpy06.CPY06IssuerKey;
+import org.cryptimeleon.groupsig.cpy06.CPY06PublicParameters;
 
 /**
  * The member key issuing protocol in [CPY06] is partially based on the join protocol from [NguSaf04], Section 4.2.

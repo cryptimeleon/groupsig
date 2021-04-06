@@ -1,4 +1,4 @@
-package org.cryptimeleon.groupsig.CPY06;
+package org.cryptimeleon.groupsig.cpy06;
 
 import org.cryptimeleon.groupsig.common.GMLEntry;
 import org.cryptimeleon.groupsig.common.GroupMembershipList;
@@ -8,7 +8,6 @@ import org.cryptimeleon.math.serialization.annotations.Represented;
 import org.cryptimeleon.math.structures.groups.GroupElement;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Objects;
 
 public class CPY06GroupMembershipList implements GroupMembershipList {

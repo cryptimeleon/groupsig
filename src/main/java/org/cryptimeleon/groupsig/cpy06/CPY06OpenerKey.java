@@ -1,4 +1,4 @@
-package org.cryptimeleon.groupsig.CPY06;
+package org.cryptimeleon.groupsig.cpy06;
 
 import org.cryptimeleon.groupsig.common.OpenerKey;
 import org.cryptimeleon.math.serialization.Representation;

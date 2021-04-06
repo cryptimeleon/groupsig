@@ -1,14 +1,14 @@
-package org.cryptimeleon.groupsig.CPY06.issuing_protocol;
+package org.cryptimeleon.groupsig.cpy06.issuingprotocol;
 
 import org.cryptimeleon.craco.protocols.arguments.fiatshamir.FiatShamirProofSystem;
-import org.cryptimeleon.groupsig.CPY06.CPY06GMLEntry;
-import org.cryptimeleon.groupsig.CPY06.CPY06IssuerKey;
-import org.cryptimeleon.groupsig.CPY06.CPY06ManagerKey;
-import org.cryptimeleon.groupsig.CPY06.CPY06PublicParameters;
-import org.cryptimeleon.groupsig.CPY06.issuing_protocol.pok.CPY06XiProof;
-import org.cryptimeleon.groupsig.CPY06.issuing_protocol.pok.CPY06XiProofCommonInput;
 import org.cryptimeleon.groupsig.common.protocol.IssuingProtocol;
 import org.cryptimeleon.groupsig.common.protocol.IssuingProtocolInstance;
+import org.cryptimeleon.groupsig.cpy06.CPY06GMLEntry;
+import org.cryptimeleon.groupsig.cpy06.CPY06IssuerKey;
+import org.cryptimeleon.groupsig.cpy06.CPY06ManagerKey;
+import org.cryptimeleon.groupsig.cpy06.CPY06PublicParameters;
+import org.cryptimeleon.groupsig.cpy06.issuingprotocol.joinpok.CPY06XiProof;
+import org.cryptimeleon.groupsig.cpy06.issuingprotocol.joinpok.CPY06XiProofCommonInput;
 import org.cryptimeleon.math.serialization.Representation;
 import org.cryptimeleon.math.structures.groups.GroupElement;
 import org.cryptimeleon.math.structures.rings.zn.Zp;
@@ -66,12 +66,9 @@ public class CPY06IssuingProtocolIssuerInstance implements IssuingProtocolInstan
                 CPY06XiGenerationResult xiGenerationResult = new CPY06XiGenerationResult(received, pp, I, u, v);
                 Pi = xiGenerationResult.getPi();
                 // Verify proof for generation of x_i
-                CPY06XiProofCommonInput xiProofCommonInput = new CPY06XiProofCommonInput(
-                        pp, Pi, I, u, v
-                );
+                CPY06XiProofCommonInput xiProofCommonInput = new CPY06XiProofCommonInput(Pi, I, u, v);
                 FiatShamirProofSystem proofSystem = new FiatShamirProofSystem(new CPY06XiProof(pp));
                 if (!proofSystem.checkProof(xiProofCommonInput, xiGenerationResult.getProof())) {
-                    // TODO: Is null appropriate here to indicate failure of proof checking?
                     throw new IllegalArgumentException("Proof verification failed");
                 }
                 state = State.SENT_KEY;

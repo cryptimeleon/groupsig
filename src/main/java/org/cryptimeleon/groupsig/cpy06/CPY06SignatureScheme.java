@@ -1,12 +1,16 @@
-package org.cryptimeleon.groupsig.CPY06;
+package org.cryptimeleon.groupsig.cpy06;
 
 import org.cryptimeleon.craco.common.ByteArrayImplementation;
 import org.cryptimeleon.craco.common.plaintexts.PlainText;
-import org.cryptimeleon.groupsig.CPY06.issuing_protocol.CPY06IssuerCommonInput;
-import org.cryptimeleon.groupsig.CPY06.issuing_protocol.CPY06IssuingProtocol;
-import org.cryptimeleon.groupsig.CPY06.issuing_protocol.CPY06IssuingProtocolIssuerInstance;
-import org.cryptimeleon.groupsig.CPY06.issuing_protocol.CPY06IssuingProtocolUserInstance;
+import org.cryptimeleon.craco.protocols.arguments.fiatshamir.FiatShamirProof;
+import org.cryptimeleon.craco.protocols.arguments.fiatshamir.FiatShamirProofSystem;
 import org.cryptimeleon.groupsig.common.*;
+import org.cryptimeleon.groupsig.cpy06.claimpok.CPY06ClaimFSProof;
+import org.cryptimeleon.groupsig.cpy06.claimpok.CPY06ClaimFSProofSecretInput;
+import org.cryptimeleon.groupsig.cpy06.issuingprotocol.CPY06IssuerCommonInput;
+import org.cryptimeleon.groupsig.cpy06.issuingprotocol.CPY06IssuingProtocol;
+import org.cryptimeleon.groupsig.cpy06.issuingprotocol.CPY06IssuingProtocolIssuerInstance;
+import org.cryptimeleon.groupsig.cpy06.issuingprotocol.CPY06IssuingProtocolUserInstance;
 import org.cryptimeleon.math.hash.ByteAccumulator;
 import org.cryptimeleon.math.hash.impl.ByteArrayAccumulator;
 import org.cryptimeleon.math.serialization.Representation;
@@ -14,7 +18,6 @@ import org.cryptimeleon.math.serialization.annotations.ReprUtil;
 import org.cryptimeleon.math.serialization.annotations.Represented;
 import org.cryptimeleon.math.structures.groups.GroupElement;
 import org.cryptimeleon.math.structures.groups.elliptic.BilinearMap;
-import org.cryptimeleon.math.structures.rings.zn.Zn;
 import org.cryptimeleon.math.structures.rings.zn.Zp;
 
 import java.util.Collection;
@@ -139,7 +142,7 @@ public class CPY06SignatureScheme implements GroupSignatureScheme {
         Zp.ZpElement sx = bx.add(c.mul(cpy06MemberKey.getX()));
         Zp.ZpElement st = bt.add(c.mul(cpy06MemberKey.getT()));
 
-        return new CPY06Signature(T1, T2, T3, T4, T5, c, sr1, sr2, sd1, sd2, sx, st);
+        return new CPY06Signature(pp, T1, T2, T3, T4, T5, c, sr1, sr2, sd1, sd2, sx, st);
     }
 
     @Override
@@ -199,15 +202,27 @@ public class CPY06SignatureScheme implements GroupSignatureScheme {
         CPY06MemberKey cpy06MemberKey = (CPY06MemberKey) memberKey;
         CPY06Signature cpy06Signature = (CPY06Signature) signature;
 
-        // TODO (rh): Generate a proof of knowledge of the value x which satisfies e(P_1, T_4)^x = T_5
-        //  This can be done via Schnorr.
-        return null;
+        FiatShamirProofSystem proofSystem = new FiatShamirProofSystem(new CPY06ClaimFSProof(pp));
+        FiatShamirProof proof = proofSystem.createProof(
+                cpy06Signature,
+                new CPY06ClaimFSProofSecretInput(cpy06MemberKey.getX())
+        );
+        return new CPY06ClaimProof(proof);
     }
 
     @Override
     public Boolean claimVerify(ClaimProof proof, GroupSignature signature) {
-        // TODO (rh): Verify the proof
-        return false;
+        if (!(proof instanceof CPY06ClaimProof)) {
+            throw new IllegalArgumentException("Given claim proof" + proof + " is not a CPY06ClaimProof");
+        }
+        if (!(signature instanceof CPY06Signature)) {
+            throw new IllegalArgumentException("Given group signature" + signature + " is not a CPY06Signature");
+        }
+        CPY06ClaimProof claimProof = (CPY06ClaimProof) proof;
+        CPY06Signature cpy06Signature = (CPY06Signature) signature;
+
+        FiatShamirProofSystem proofSystem = new FiatShamirProofSystem(new CPY06ClaimFSProof(pp));
+        return proofSystem.checkProof(cpy06Signature, claimProof.getProof());
     }
 
     @Override
@@ -322,7 +337,7 @@ public class CPY06SignatureScheme implements GroupSignatureScheme {
 
     @Override
     public GroupSignature restoreSignature(Representation repr) {
-        return new CPY06Signature(repr, pp.getBilGroup());
+        return new CPY06Signature(repr, pp);
     }
 
     @Override
@@ -348,11 +363,6 @@ public class CPY06SignatureScheme implements GroupSignatureScheme {
     @Override
     public OpenProof restoreOpenProof(Representation repr) {
         throw new UnsupportedOperationException("This scheme does not support open proofs");
-    }
-
-    @Override
-    public ClaimProof restoreClaimProof(Representation repr) {
-        throw new UnsupportedOperationException("This scheme does not support claim proofs");
     }
 
     @Override

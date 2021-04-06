@@ -232,8 +232,6 @@ public interface GroupSignatureScheme extends StandaloneRepresentable, Represent
 
     OpenProof restoreOpenProof(Representation repr);
 
-    ClaimProof restoreClaimProof(Representation repr);
-
     EqualityProof restoreEqualityProof(Representation repr);
 
     /**
@@ -281,8 +279,6 @@ public interface GroupSignatureScheme extends StandaloneRepresentable, Represent
                 return this.restoreRevocationList(repr);
             } else if (OpenProof.class.isAssignableFrom((Class) type)) {
                 return this.restoreOpenProof(repr);
-            } else if (ClaimProof.class.isAssignableFrom((Class) type)) {
-                return this.restoreClaimProof(repr);
             } else if (EqualityProof.class.isAssignableFrom((Class) type)) {
                 return this.restoreEqualityProof(repr);
             }

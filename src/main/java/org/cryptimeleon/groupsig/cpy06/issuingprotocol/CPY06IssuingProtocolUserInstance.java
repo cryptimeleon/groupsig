@@ -1,19 +1,18 @@
-package org.cryptimeleon.groupsig.CPY06.issuing_protocol;
+package org.cryptimeleon.groupsig.cpy06.issuingprotocol;
 
 import org.cryptimeleon.craco.protocols.CommonInput;
 import org.cryptimeleon.craco.protocols.SecretInput;
 import org.cryptimeleon.craco.protocols.arguments.fiatshamir.FiatShamirProof;
 import org.cryptimeleon.craco.protocols.arguments.fiatshamir.FiatShamirProofSystem;
-import org.cryptimeleon.groupsig.CPY06.CPY06MemberKey;
-import org.cryptimeleon.groupsig.CPY06.CPY06PublicParameters;
-import org.cryptimeleon.groupsig.CPY06.issuing_protocol.pok.CPY06XiProof;
-import org.cryptimeleon.groupsig.CPY06.issuing_protocol.pok.CPY06XiProofCommonInput;
-import org.cryptimeleon.groupsig.CPY06.issuing_protocol.pok.CPY06XiProofSecretInput;
 import org.cryptimeleon.groupsig.common.protocol.IssuingProtocol;
 import org.cryptimeleon.groupsig.common.protocol.IssuingProtocolInstance;
+import org.cryptimeleon.groupsig.cpy06.CPY06MemberKey;
+import org.cryptimeleon.groupsig.cpy06.CPY06PublicParameters;
+import org.cryptimeleon.groupsig.cpy06.issuingprotocol.joinpok.CPY06XiProof;
+import org.cryptimeleon.groupsig.cpy06.issuingprotocol.joinpok.CPY06XiProofCommonInput;
+import org.cryptimeleon.groupsig.cpy06.issuingprotocol.joinpok.CPY06XiProofSecretInput;
 import org.cryptimeleon.math.serialization.Representation;
 import org.cryptimeleon.math.structures.groups.GroupElement;
-import org.cryptimeleon.math.structures.rings.zn.Zn;
 import org.cryptimeleon.math.structures.rings.zn.Zp;
 
 public class CPY06IssuingProtocolUserInstance implements IssuingProtocolInstance {
@@ -119,7 +118,7 @@ public class CPY06IssuingProtocolUserInstance implements IssuingProtocolInstance
 
         FiatShamirProofSystem proofSystem = new FiatShamirProofSystem(new CPY06XiProof(pp));
 
-        CommonInput commonInput = new CPY06XiProofCommonInput(pp, pi, I, u, v);
+        CommonInput commonInput = new CPY06XiProofCommonInput(pi, I, u, v);
         // Calculation reveals rPrime = ur
         SecretInput secretInput = new CPY06XiProofSecretInput(x, u.mul(r));
         FiatShamirProof proof = proofSystem.createProof(commonInput, secretInput);

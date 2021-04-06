@@ -1,16 +1,19 @@
-package org.cryptimeleon.groupsig.CPY06;
+package org.cryptimeleon.groupsig.cpy06;
 
+import org.cryptimeleon.craco.protocols.CommonInput;
+import org.cryptimeleon.groupsig.common.ClaimProof;
 import org.cryptimeleon.groupsig.common.GroupSignature;
 import org.cryptimeleon.math.serialization.Representation;
 import org.cryptimeleon.math.serialization.annotations.ReprUtil;
 import org.cryptimeleon.math.serialization.annotations.Represented;
 import org.cryptimeleon.math.structures.groups.GroupElement;
-import org.cryptimeleon.math.structures.groups.elliptic.BilinearGroup;
 import org.cryptimeleon.math.structures.rings.zn.Zp;
 
 import java.util.Objects;
 
-public class CPY06Signature implements GroupSignature {
+public class CPY06Signature implements GroupSignature, CommonInput {
+
+    private CPY06PublicParameters pp;
 
     @Represented(restorer = "G1")
     private GroupElement T1, T2, T3;
@@ -24,9 +27,10 @@ public class CPY06Signature implements GroupSignature {
     @Represented(restorer = "Zp")
     private Zp.ZpElement sr1, sr2, sd1, sd2, sx, st;
 
-    public CPY06Signature(GroupElement t1, GroupElement t2, GroupElement t3, GroupElement t4, GroupElement t5,
+    public CPY06Signature(CPY06PublicParameters pp, GroupElement t1, GroupElement t2, GroupElement t3, GroupElement t4, GroupElement t5,
                           Zp.ZpElement c, Zp.ZpElement sr1, Zp.ZpElement sr2, Zp.ZpElement sd1, Zp.ZpElement sd2,
                           Zp.ZpElement sx, Zp.ZpElement st) {
+        this.pp = pp;
         T1 = t1;
         T2 = t2;
         T3 = t3;
@@ -41,9 +45,11 @@ public class CPY06Signature implements GroupSignature {
         this.st = st;
     }
 
-    public CPY06Signature(Representation repr, BilinearGroup bilGroup) {
-        new ReprUtil(this).register(bilGroup.getBilinearMap()).register((Zp) bilGroup.getZn(), "Zp")
+    public CPY06Signature(Representation repr, CPY06PublicParameters pp) {
+        Zp zp = new Zp(pp.getBilGroup().getZn().size());
+        new ReprUtil(this).register(zp, "Zp")
                 .deserialize(repr);
+        this.pp = pp;
     }
 
     public GroupElement getT1() {
@@ -125,5 +131,10 @@ public class CPY06Signature implements GroupSignature {
                 && Objects.equals(sd2, other.sd2)
                 && Objects.equals(sx, other.sx)
                 && Objects.equals(st, other.st);
+    }
+
+    @Override
+    public ClaimProof restoreClaimProof(Representation repr) {
+        return new CPY06ClaimProof(repr, pp, this);
     }
 }

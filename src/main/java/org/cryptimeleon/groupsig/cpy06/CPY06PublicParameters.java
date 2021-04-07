@@ -1,6 +1,6 @@
-package org.cryptimeleon.groupsig.CPY06;
+package org.cryptimeleon.groupsig.cpy06;
 import org.cryptimeleon.craco.common.PublicParameters;
-import org.cryptimeleon.groupsig.common.protocol.CommonInput;
+import org.cryptimeleon.craco.protocols.CommonInput;
 import org.cryptimeleon.math.serialization.Representation;
 import org.cryptimeleon.math.serialization.annotations.ReprUtil;
 import org.cryptimeleon.math.serialization.annotations.Represented;
@@ -33,7 +33,7 @@ public class CPY06PublicParameters implements PublicParameters, CommonInput {
     @Represented(restorer = "bilGroup::getG1")
     private GroupElement X, Y, Z;
 
-    private HashIntoZp hashFunction;
+    private final HashIntoZp hashFunction;
 
     public CPY06PublicParameters(BilinearGroup bilGroup, GroupElement p1, GroupElement p2, GroupElement q, GroupElement r,
                                GroupElement w, GroupElement x, GroupElement y, GroupElement z) {

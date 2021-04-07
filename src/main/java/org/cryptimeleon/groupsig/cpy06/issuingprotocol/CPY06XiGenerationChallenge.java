@@ -1,4 +1,4 @@
-package org.cryptimeleon.groupsig.CPY06.issuing_protocol;
+package org.cryptimeleon.groupsig.cpy06.issuingprotocol;
 
 import org.cryptimeleon.math.serialization.Representable;
 import org.cryptimeleon.math.serialization.Representation;

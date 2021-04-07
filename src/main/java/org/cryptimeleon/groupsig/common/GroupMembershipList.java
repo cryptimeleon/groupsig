@@ -23,4 +23,11 @@ public interface GroupMembershipList extends Representable {
      * @return The {@link GMLEntry} belonging to the identity, or {@link null} if no such entry exists
      */
     GMLEntry get(Integer id);
+
+    /**
+     * Returns the next free user id usable for a new user.
+     *
+     * @return an unused user id
+     */
+    Integer getNextNewUserId();
 }

@@ -3,6 +3,7 @@ package org.cryptimeleon.groupsig;
 import org.cryptimeleon.craco.common.TestParameterProvider;
 import org.cryptimeleon.craco.common.plaintexts.PlainText;
 import org.cryptimeleon.groupsig.common.*;
+import org.cryptimeleon.math.serialization.Representation;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,6 +17,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,7 +47,7 @@ public class GroupSignatureTester {
     public void testJoin(GroupSignatureTestParam param) {
         if (param.getScheme() == null) {
             fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. Please implement" +
-                    " a corresponding TestParameterProvider under test/org.cryptimeleon.groupsig.org.cryptimeleon.groupsig.params");
+                    " a corresponding TestParameterProvider under org.cryptimeleon.groupsig.params");
         }
         System.out.println("Running join");
         MemberKey memberKey = join(param);
@@ -54,11 +56,13 @@ public class GroupSignatureTester {
         assertNotNull(memberKey2, "Second resulting member key is null");
         assertNotEquals(memberKey, memberKey2, "Resulting member keys are the same");
         try {
+            System.out.println("Retrieving GML entry for member with identity " + memberKey.getIdentity());
             param.getGroupMembershipList().get(memberKey.getIdentity());
         } catch (Exception e) {
             fail("Could not retrieve GML entry for first member key from group membership list because of " + e);
         }
         try {
+            System.out.println("Retrieving GML entry for member with identity " + memberKey.getIdentity());
             param.getGroupMembershipList().get(memberKey2.getIdentity());
         } catch (Exception e) {
             fail("Could not retrieve GML entry for second member key from group membership list because of " + e);
@@ -73,7 +77,7 @@ public class GroupSignatureTester {
         public void testSignAndVerify(GroupSignatureTestParam param) {
             if (param.getScheme() == null) {
                 fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. Please implement" +
-                        " a corresponding TestParameterProvider under test/org.cryptimeleon.groupsig.org.cryptimeleon.groupsig.params");
+                        " a corresponding TestParameterProvider under org.cryptimeleon.groupsig.params");
             }
             System.out.println("Running join");
             MemberKey memberKey = join(param);
@@ -98,7 +102,7 @@ public class GroupSignatureTester {
                 if (param.getScheme() == null) {
                     fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
                             "Please implement a corresponding TestParameterProvider " +
-                            "under test/org.cryptimeleon.groupsig.org.cryptimeleon.groupsig.params");
+                            "under org.cryptimeleon.groupsig.params");
                 }
                 System.out.println("Running join and sign");
                 MemberKey memberKey = join(param);
@@ -125,7 +129,7 @@ public class GroupSignatureTester {
                 if (param.getScheme() == null) {
                     fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
                             "Please implement a corresponding TestParameterProvider " +
-                            "under test/org.cryptimeleon.groupsig.org.cryptimeleon.groupsig.params");
+                            "under org.cryptimeleon.groupsig.params");
                 }
                 System.out.println("Running join and sign");
                 MemberKey memberKey = join(param);
@@ -165,7 +169,7 @@ public class GroupSignatureTester {
                 if (param.getScheme() == null) {
                     fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
                             "Please implement a corresponding TestParameterProvider " +
-                            "under test/org.cryptimeleon.groupsig.org.cryptimeleon.groupsig.params");
+                            "under org.cryptimeleon.groupsig.params");
                 }
                 System.out.println("Running join and sign");
                 MemberKey memberKey = join(param);
@@ -200,7 +204,7 @@ public class GroupSignatureTester {
                 if (param.getScheme() == null) {
                     fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
                             "Please implement a corresponding TestParameterProvider " +
-                            "under test/org.cryptimeleon.groupsig.org.cryptimeleon.groupsig.params");
+                            "under org.cryptimeleon.groupsig.params");
                 }
                 System.out.println("Running join and sign");
                 MemberKey memberKey = join(param);
@@ -231,50 +235,6 @@ public class GroupSignatureTester {
                 }
                 assertTrue(successful);
             }
-
-            @ParameterizedTest
-            @MethodSource("org.cryptimeleon.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
-            public void testProveEqualityAndProveEqualityVerify(GroupSignatureTestParam param) {
-                if (param.getScheme() == null) {
-                    fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
-                            "Please implement a corresponding TestParameterProvider " +
-                            "under test/org.cryptimeleon.groupsig.org.cryptimeleon.groupsig.params");
-                }
-                System.out.println("Running join and sign");
-                MemberKey memberKey = join(param);
-                if (memberKey == null) {
-                    System.out.println("Join failed. Member key is null. Skipping test");
-                    assumeFalse(true);
-                }
-                GroupSignature signature1 = param.getScheme().sign(param.getPlainText1(), memberKey);
-                if (!param.getScheme().verify(param.getPlainText1(), signature1)) {
-                    System.out.println("Signing failed. First signature does not verify. Skipping test");
-                    assumeFalse(true);
-                }
-                GroupSignature signature2 = param.getScheme().sign(param.getPlainText1(), memberKey);
-                if (!param.getScheme().verify(param.getPlainText1(), signature2)) {
-                    System.out.println("Signing failed. Second signature does not verify. Skipping test");
-                    assumeFalse(true);
-                }
-                List<GroupSignature> signatures = new LinkedList<>();
-                signatures.add(signature1);
-                signatures.add(signature2);
-                System.out.println("Running proveEquality and proveEqualityVerify");
-                boolean successful;
-                try {
-                    EqualityProof proof = param.getScheme().proveEquality(memberKey, signatures);
-                    successful = param.getScheme().proveEqualityVerify(proof, signatures);
-                } catch (UnsupportedOperationException e) {
-                    System.out.println("ProveEquality/ProveEqualityVerify not supported. Skipping test");
-                    return;
-                }
-                if (!successful) {
-                    System.out.println("Test not successful. If you do not support " +
-                            "proveEquality/proveEqualityVerify, make sure that those methods throw an " +
-                            "UnsupportedOperationException");
-                }
-                assertTrue(successful);
-            }
         }
     }
 
@@ -287,7 +247,7 @@ public class GroupSignatureTester {
             if (param.getScheme() == null) {
                 fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
                         "Please implement a corresponding TestParameterProvider under " +
-                        "test/org.cryptimeleon.groupsig.org.cryptimeleon.groupsig.params");
+                        "org.cryptimeleon.groupsig.params");
             }
             OpenerKey reconstructedOpenerKey = param.getScheme().restoreOpenerKey(
                     param.getOpenerKey().getRepresentation()
@@ -304,7 +264,7 @@ public class GroupSignatureTester {
             if (param.getScheme() == null) {
                 fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
                         "Please implement a corresponding TestParameterProvider under " +
-                        "test/org.cryptimeleon.groupsig.org.cryptimeleon.groupsig.params");
+                        "org.cryptimeleon.groupsig.params");
             }
             IssuerKey reconstructedIssuerKey = param.getScheme().restoreIssuerKey(
                     param.getIssuerKey().getRepresentation()
@@ -320,7 +280,7 @@ public class GroupSignatureTester {
             if (param.getScheme() == null) {
                 fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
                         "Please implement a corresponding TestParameterProvider under " +
-                        "test/org.cryptimeleon.groupsig.org.cryptimeleon.groupsig.params");
+                        "org.cryptimeleon.groupsig.params");
             }
             PlainText reconstructedPlainText = param.getScheme().restorePlainText(
                     param.getPlainText1().getRepresentation()
@@ -337,7 +297,7 @@ public class GroupSignatureTester {
             if (param.getScheme() == null) {
                 fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
                         "Please implement a corresponding TestParameterProvider under " +
-                        "test/org.cryptimeleon.groupsig.org.cryptimeleon.groupsig.params");
+                        "org.cryptimeleon.groupsig.params");
             }
             System.out.println("Running join");
             MemberKey memberKey = join(param);
@@ -361,7 +321,7 @@ public class GroupSignatureTester {
             if (param.getScheme() == null) {
                 fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
                         "Please implement a corresponding TestParameterProvider under " +
-                        "test/org.cryptimeleon.groupsig.org.cryptimeleon.groupsig.params");
+                        "org.cryptimeleon.groupsig.params");
             }
             System.out.println("Running join");
             MemberKey memberKey = join(param);
@@ -390,7 +350,7 @@ public class GroupSignatureTester {
             if (param.getScheme() == null) {
                 fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
                         "Please implement a corresponding TestParameterProvider under " +
-                        "test/org.cryptimeleon.groupsig.org.cryptimeleon.groupsig.params");
+                        "org.cryptimeleon.groupsig.params");
             }
             System.out.println("Running join");
             MemberKey memberKey = join(param);
@@ -414,7 +374,7 @@ public class GroupSignatureTester {
             if (param.getScheme() == null) {
                 fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
                         "Please implement a corresponding TestParameterProvider under " +
-                        "test/org.cryptimeleon.groupsig.org.cryptimeleon.groupsig.params");
+                        "org.cryptimeleon.groupsig.params");
             }
             System.out.println("Running join");
             MemberKey memberKey = join(param);
@@ -454,7 +414,7 @@ public class GroupSignatureTester {
             if (param.getScheme() == null) {
                 fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
                         "Please implement a corresponding TestParameterProvider under " +
-                        "test/org.cryptimeleon.groupsig.org.cryptimeleon.groupsig.params");
+                        "org.cryptimeleon.groupsig.params");
             }
             System.out.println("Running join");
             MemberKey memberKey = join(param);
@@ -485,7 +445,7 @@ public class GroupSignatureTester {
             if (param.getScheme() == null) {
                 fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
                         "Please implement a corresponding TestParameterProvider under " +
-                        "test/org.cryptimeleon.groupsig.org.cryptimeleon.groupsig.params");
+                        "org.cryptimeleon.groupsig.params");
             }
             System.out.println("Running join and sign");
             MemberKey memberKey = join(param);
@@ -513,7 +473,7 @@ public class GroupSignatureTester {
             System.out.println("Testing representation");
             Assertions.assertEquals(
                     openResult.getOpenProof(),
-                    param.getScheme().restoreOpenProof(openResult.getOpenProof().getRepresentation()),
+                    signature.restoreOpenProof(openResult.getOpenProof().getRepresentation()),
                     "Reconstructed open proof does not match actual open proof"
             );
         }
@@ -524,7 +484,7 @@ public class GroupSignatureTester {
             if (param.getScheme() == null) {
                 fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
                         "Please implement a corresponding TestParameterProvider under " +
-                        "test/org.cryptimeleon.groupsig.org.cryptimeleon.groupsig.params");
+                        "org.cryptimeleon.groupsig.params");
             }
             System.out.println("Running join and sign");
             MemberKey memberKey = join(param);
@@ -554,57 +514,8 @@ public class GroupSignatureTester {
             System.out.println("Testing representation");
             Assertions.assertEquals(
                     claimProof,
-                    param.getScheme().restoreClaimProof(claimProof.getRepresentation()),
+                    signature.restoreClaimProof(claimProof.getRepresentation()),
                     "Reconstructed claim proof does not match actual claim proof"
-            );
-        }
-
-        @ParameterizedTest
-        @MethodSource("org.cryptimeleon.groupsig.GroupSignatureTester#getGroupSignatureTestParams")
-        public void testGetEqualityProof(GroupSignatureTestParam param) {
-            if (param.getScheme() == null) {
-                fail("Scheme " + param.getClazz().getName() + " has no respective test parameters. " +
-                        "Please implement a corresponding TestParameterProvider under " +
-                        "test/org.cryptimeleon.groupsig.org.cryptimeleon.groupsig.params");
-            }
-            System.out.println("Running join and sign");
-            MemberKey memberKey = join(param);
-            if (memberKey == null) {
-                System.out.println("Join failed. Member key is null. Skipping test");
-                assumeFalse(true);
-            }
-            GroupSignature signature1 = param.getScheme().sign(param.getPlainText1(), memberKey);
-            if (!param.getScheme().verify(param.getPlainText1(), signature1)) {
-                System.out.println("Signing failed. First signature does not verify. Skipping test");
-                assumeFalse(true);
-            }
-            GroupSignature signature2 = param.getScheme().sign(param.getPlainText1(), memberKey);
-            if (!param.getScheme().verify(param.getPlainText1(), signature2)) {
-                System.out.println("Signing failed. Second signature does not verify. Skipping test");
-                assumeFalse(true);
-            }
-            List<GroupSignature> signatures = new LinkedList<>();
-            signatures.add(signature1);
-            signatures.add(signature2);
-            System.out.println("Running proveEquality and proveEqualityVerify");
-            EqualityProof proof;
-            try {
-                proof = param.getScheme().proveEquality(memberKey, signatures);
-                assertNotNull(proof, "Equality proof is null. Either implement proveEquality or throw an "
-                        + "UnsupportedOperationException to indicate that you do not support proveEquality.");
-            } catch (UnsupportedOperationException e) {
-                System.out.println("ProveEquality not supported by scheme. Skipping test assertions");
-                return;
-            }
-            if (!param.getScheme().proveEqualityVerify(proof, signatures)) {
-                System.out.println("ProveEquality failed. Proof does not verify. Skipping test");
-                assumeFalse(true);
-            }
-            System.out.println("Testing representation");
-            Assertions.assertEquals(
-                    proof,
-                    param.getScheme().restoreEqualityProof(proof.getRepresentation()),
-                    "Reconstructed equality proof does not match actual equality proof"
             );
         }
     }
@@ -649,10 +560,20 @@ public class GroupSignatureTester {
     }
 
     static MemberKey join(GroupSignatureTestParam param) {
+        LinkedBlockingQueue<Representation> memberToIssuer = new LinkedBlockingQueue<>();
+        LinkedBlockingQueue<Representation> issuerToMember = new LinkedBlockingQueue<>();
         ExecutorService es = Executors.newFixedThreadPool(2);
-        Future<MemberKey> memberResult = es.submit(() -> param.getScheme().joinMember());
+        Future<MemberKey> memberResult = es.submit(() -> param.getScheme().joinMember(issuerToMember, memberToIssuer));
         Future<?> issuerResult = es.submit(
-                () -> param.getScheme().joinIssuer(param.getIssuerKey(), param.getGroupMembershipList())
+                () -> {
+                    try {
+                        param.getScheme().joinIssuer(param.getIssuerKey(), param.getGroupMembershipList(), memberToIssuer,
+                                issuerToMember);
+                    } catch (InterruptedException e) {
+                        System.out.println("One of the queues timed out waiting for operation");
+                        e.printStackTrace();
+                    }
+                }
         );
         MemberKey memberKey = null;
         try {

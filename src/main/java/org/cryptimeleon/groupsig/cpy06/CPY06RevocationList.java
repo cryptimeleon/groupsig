@@ -1,4 +1,4 @@
-package org.cryptimeleon.groupsig.CPY06;
+package org.cryptimeleon.groupsig.cpy06;
 
 import org.cryptimeleon.groupsig.common.RevocationList;
 import org.cryptimeleon.groupsig.common.RevocationListEntry;

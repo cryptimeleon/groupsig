@@ -8,6 +8,7 @@ import org.cryptimeleon.math.serialization.annotations.RepresentationRestorer;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * Interfaces for Group Signatures designed according to [DAR15].
@@ -26,23 +27,33 @@ public interface GroupSignatureScheme extends StandaloneRepresentable, Represent
      * Member part of the join protocol.
      *
      * <p>If the join protocol is an interactive one, this method should be run in parallel with
-     * {@link GroupSignatureScheme#joinIssuer(IssuerKey, GroupMembershipList)}.
+     * {@link GroupSignatureScheme#joinIssuer(IssuerKey, GroupMembershipList, BlockingQueue, BlockingQueue)}.
+     *
+     * @param received Contains the messages sent by the issuer to the member
+     * @param sent Contains the messages sent by the member to the issuer
+     *
+     * @throws InterruptedException if interrupted while waiting for one of the queues
      *
      * @return The issued {@link MemberKey}
      */
-    MemberKey joinMember();
+    MemberKey joinMember(BlockingQueue<Representation> received, BlockingQueue<Representation> sent) throws InterruptedException;
 
     /**
      * Issuer part of the join protocol.
      *
      * <p>If the join protocol is an interactive one, this method should be run in parallel with
-     * {@link GroupSignatureScheme#joinMember()}.
+     * {@link GroupSignatureScheme#joinMember(BlockingQueue, BlockingQueue)}.
      *
      * @param issuerKey The {@link IssuerKey} used to issue the key for the new group member.
      * @param gml The {@link GroupMembershipList} containing information about each member.
      *            Gets updated with new member information if join succeeds.
+     * @param received Contains the messages sent by the member to the issuer
+     * @param sent Contains the messages sent by the issuer to the member
+     *
+     * @throws InterruptedException if interrupted while waiting for one of the queues
      */
-    void joinIssuer(IssuerKey issuerKey, GroupMembershipList gml);
+    void joinIssuer(IssuerKey issuerKey, GroupMembershipList gml, BlockingQueue<Representation> received,
+                    BlockingQueue<Representation> sent) throws InterruptedException;
 
     /**
      * Sign the given plain text with the given member key.
@@ -177,30 +188,6 @@ public interface GroupSignatureScheme extends StandaloneRepresentable, Represent
     Boolean trace(GroupSignature signature, RevocationList revocationList, OpenerKey openerKey,
                   GroupMembershipList gml) throws UnsupportedOperationException;
 
-    /**
-     * Creates a proof of equality of all the group signatures within the given set, using the specified member and
-     * group keys. Allows the corresponding member to prove that they issued all the signatures within the set.
-     *
-     * @param memberKey The {@link MemberKey} of the group member that wants to prove equality
-     * @param signatures The {@link Collection} of {@link GroupSignature} instances to prove equality for
-     * @return A {@link EqualityProof} proving equality
-     * @throws UnsupportedOperationException if the scheme does not support this operation
-     */
-    EqualityProof proveEquality(MemberKey memberKey, Collection<GroupSignature> signatures)
-            throws UnsupportedOperationException;
-
-    /**
-     * Verifies the given {@link EqualityProof}.
-     *
-     * @param equalityProof The {@link EqualityProof} to verify
-     * @param signatures The {@link Collection} of {@link GroupSignature} instances for which the equality proof is
-     *                   supposed to hold
-     * @return {@code true} if the verification succeeds, else {@code false}
-     * @throws UnsupportedOperationException if the scheme does not support this operation
-     */
-    Boolean proveEqualityVerify(EqualityProof equalityProof, Collection<GroupSignature> signatures)
-            throws UnsupportedOperationException;
-
     MemberKey restoreMemberKey(Representation repr);
 
     OpenerKey restoreOpenerKey(Representation repr);
@@ -218,12 +205,6 @@ public interface GroupSignatureScheme extends StandaloneRepresentable, Represent
     RevocationListEntry restoreRevocationListEntry(Representation repr);
 
     RevocationList restoreRevocationList(Representation repr);
-
-    OpenProof restoreOpenProof(Representation repr);
-
-    ClaimProof restoreClaimProof(Representation repr);
-
-    EqualityProof restoreEqualityProof(Representation repr);
 
     /**
      * Provides an injective mapping of the byte[] to a {@link PlainText} usable with this scheme (which may be a
@@ -268,12 +249,6 @@ public interface GroupSignatureScheme extends StandaloneRepresentable, Represent
                 return this.restoreRevocationListEntry(repr);
             } else if (RevocationList.class.isAssignableFrom((Class) type)) {
                 return this.restoreRevocationList(repr);
-            } else if (OpenProof.class.isAssignableFrom((Class) type)) {
-                return this.restoreOpenProof(repr);
-            } else if (ClaimProof.class.isAssignableFrom((Class) type)) {
-                return this.restoreClaimProof(repr);
-            } else if (EqualityProof.class.isAssignableFrom((Class) type)) {
-                return this.restoreEqualityProof(repr);
             }
         }
         throw new IllegalArgumentException("Cannot recreate object of type: " + type.getTypeName());

@@ -1,12 +1,12 @@
 package org.cryptimeleon.groupsig.params;
 
+import org.cryptimeleon.craco.common.ByteArrayImplementation;
 import org.cryptimeleon.craco.common.TestParameterProvider;
 import org.cryptimeleon.craco.common.plaintexts.PlainText;
-import org.cryptimeleon.craco.enc.sym.streaming.aes.ByteArrayImplementation;
-import org.cryptimeleon.groupsig.CPY06.CPY06GroupMembershipList;
-import org.cryptimeleon.groupsig.CPY06.CPY06RevocationList;
-import org.cryptimeleon.groupsig.CPY06.CPY06Setup;
-import org.cryptimeleon.groupsig.CPY06.CPY06SignatureScheme;
+import org.cryptimeleon.groupsig.cpy06.CPY06GroupMembershipList;
+import org.cryptimeleon.groupsig.cpy06.CPY06RevocationList;
+import org.cryptimeleon.groupsig.cpy06.CPY06Setup;
+import org.cryptimeleon.groupsig.cpy06.CPY06SignatureScheme;
 import org.cryptimeleon.groupsig.GroupSignatureTestParam;
 import org.cryptimeleon.groupsig.common.GroupSignatureScheme;
 import org.cryptimeleon.math.structures.groups.counting.CountingBilinearGroup;

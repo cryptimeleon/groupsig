@@ -36,7 +36,7 @@ To add the newest Groupsig version as a dependency, add this to your project's P
 <dependency>
     <groupId>org.cryptimeleon</groupId>
     <artifactId>groupsig</artifactId>
-    <version>0.0.1</version>
+    <version>0.1.0</version>
 </dependency>
 ```
 
@@ -45,7 +45,7 @@ To add the newest Groupsig version as a dependency, add this to your project's P
 Groupsig is not published via an online repository.
 You will need to use the version from your local Maven repository.
 Therefore, you need to add `mavenLocal()` to the `repositories` section of your project's `build.gradle` file.
-Then, add `implementation group: 'org.cryptimeleon', name: 'groupsig', version: '0.0.1'` to the `dependencies` section of your `build.gradle` file.
+Then, add `implementation group: 'org.cryptimeleon', name: 'groupsig', version: '0.1.0'` to the `dependencies` section of your `build.gradle` file.
 
 For example:
 
@@ -55,7 +55,7 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'org.cryptimeleon', name: 'groupsig', version: '0.0.1'
+    implementation group: 'org.cryptimeleon', name: 'groupsig', version: '0.1.0'
 }
 ```
 

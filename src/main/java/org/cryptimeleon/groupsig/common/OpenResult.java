@@ -8,8 +8,15 @@ package org.cryptimeleon.groupsig.common;
  */
 public class OpenResult {
 
-    private Integer memberIdentity;
-    private OpenProof openProof;
+    /**
+     * The opened identity.
+     */
+    protected Integer memberIdentity;
+
+    /**
+     * The proof that the opening was done correctly. May be null if the scheme does not support open proofs.
+     */
+    protected OpenProof openProof;
 
     public OpenResult(Integer memberIdentity, OpenProof openProof) {
         this.memberIdentity = memberIdentity;

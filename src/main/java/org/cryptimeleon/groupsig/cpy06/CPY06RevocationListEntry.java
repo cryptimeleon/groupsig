@@ -1,4 +1,4 @@
-package org.cryptimeleon.groupsig.CPY06;
+package org.cryptimeleon.groupsig.cpy06;
 
 import org.cryptimeleon.groupsig.common.RevocationListEntry;
 import org.cryptimeleon.math.serialization.Representation;
@@ -6,6 +6,8 @@ import org.cryptimeleon.math.serialization.annotations.ReprUtil;
 import org.cryptimeleon.math.serialization.annotations.Represented;
 import org.cryptimeleon.math.structures.groups.Group;
 import org.cryptimeleon.math.structures.groups.GroupElement;
+
+import java.util.Objects;
 
 public class CPY06RevocationListEntry implements RevocationListEntry {
 
@@ -35,5 +37,19 @@ public class CPY06RevocationListEntry implements RevocationListEntry {
     @Override
     public Representation getRepresentation() {
         return ReprUtil.serialize(this);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CPY06RevocationListEntry that = (CPY06RevocationListEntry) o;
+        return Objects.equals(identity, that.identity) &&
+                Objects.equals(C, that.C);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(identity, C);
     }
 }

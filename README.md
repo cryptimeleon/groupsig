@@ -10,7 +10,7 @@ The interfaces have largely been derived from [DiaArrRod15].
 
 
 ## Implementations
-We are currently working on implementing the traceable group signature from [ChoParYun06].
+As an example we have implemented the traceable group signature from [ChoParYun06].
 
 ## Quickstart
 

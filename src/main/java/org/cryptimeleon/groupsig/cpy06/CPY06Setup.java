@@ -1,7 +1,7 @@
 package org.cryptimeleon.groupsig.cpy06;
 
 import org.cryptimeleon.math.structures.groups.GroupElement;
-import org.cryptimeleon.math.structures.groups.counting.CountingBilinearGroup;
+import org.cryptimeleon.math.structures.groups.debug.DebugBilinearGroup;
 import org.cryptimeleon.math.structures.groups.elliptic.BilinearGroup;
 import org.cryptimeleon.math.structures.groups.elliptic.type1.supersingular.SupersingularBilinearGroup;
 import org.cryptimeleon.math.structures.rings.zn.Zp;
@@ -14,7 +14,7 @@ public class CPY06Setup {
 
     public void setup(int securityParameter, boolean debugMode) {
         if (debugMode) {
-            this.setup(new CountingBilinearGroup(securityParameter, BilinearGroup.Type.TYPE_1));
+            this.setup(new DebugBilinearGroup(securityParameter, BilinearGroup.Type.TYPE_1));
         } else {
             this.setup(new SupersingularBilinearGroup(securityParameter));
         }

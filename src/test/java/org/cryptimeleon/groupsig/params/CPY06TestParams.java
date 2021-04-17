@@ -9,12 +9,12 @@ import org.cryptimeleon.groupsig.cpy06.CPY06Setup;
 import org.cryptimeleon.groupsig.cpy06.CPY06SignatureScheme;
 import org.cryptimeleon.groupsig.GroupSignatureTestParam;
 import org.cryptimeleon.groupsig.common.GroupSignatureScheme;
-import org.cryptimeleon.math.structures.groups.counting.CountingBilinearGroup;
+import org.cryptimeleon.math.structures.groups.debug.DebugBilinearGroup;
 import org.cryptimeleon.math.structures.groups.elliptic.BilinearGroup;
 
 public class CPY06TestParams implements TestParameterProvider {
     public GroupSignatureTestParam get() {
-        BilinearGroup bilGroup = new CountingBilinearGroup(80, BilinearGroup.Type.TYPE_1);
+        BilinearGroup bilGroup = new DebugBilinearGroup(80, BilinearGroup.Type.TYPE_1);
 
         CPY06Setup setup = new CPY06Setup();
         setup.setup(bilGroup);

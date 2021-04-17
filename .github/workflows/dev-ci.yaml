@@ -5,9 +5,6 @@ on:
     branches-ignore:
       - main
       - 'release/**'
-  pull_request:
-    branches:
-      - develop
   # Nightly builds to ensure dependencies don't break anything
   schedule:
     - cron: '0 0 * * *'
@@ -16,7 +13,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses:  actions/checkout@v2
+      - uses: actions/checkout@v2
       - name: Set up JDK 1.8
         uses: actions/setup-java@v1
         with:

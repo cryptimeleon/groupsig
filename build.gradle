@@ -64,8 +64,10 @@ task javadocLatex(type: Javadoc) {
     source = sourceSets.main.allJava
     classpath = sourceSets.main.runtimeClasspath
     // link to math and craco javadocs
-    options {
-        links "https://javadoc.io/doc/org.cryptimeleon/math/" + mathVersionNoSuffix, "https://javadoc.io/doc/org.cryptimeleon/craco/" + cracoVersionNoSuffix
+    if (isRelease) {
+        options {
+            links "https://javadoc.io/doc/org.cryptimeleon/math/" + mathVersionNoSuffix, "https://javadoc.io/doc/org.cryptimeleon/craco/" + cracoVersionNoSuffix
+        }
     }
     // enable latex rendering via mathjax
     options.addBooleanOption("-allow-script-in-comments", true)

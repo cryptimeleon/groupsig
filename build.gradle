@@ -19,9 +19,7 @@ dependencies {
 
     def cracoVersion = cracoVersionNoSuffix + (isRelease ? "" : "-SNAPSHOT")
 
-    implementation group: 'org.cryptimeleon', name: 'craco', version: cracoVersion
-    implementation group: 'org.cryptimeleon', name: 'math', version: mathVersionNoSuffix + (isRelease ? "" : "-SNAPSHOT")
-
+    api group: 'org.cryptimeleon', name: 'craco', version: cracoVersion
 
     // For tests
     testImplementation(group: 'org.cryptimeleon', name: 'craco', version: cracoVersion) {

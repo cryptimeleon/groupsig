@@ -1,5 +1,6 @@
 ![Build Status](https://github.com/cryptimeleon/groupsig/workflows/Development%20Java%20CI/badge.svg)
 ![Build Status](https://github.com/cryptimeleon/groupsig/workflows/Release%20Java%20CI/badge.svg)
+![Build Status](https://github.com/cryptimeleon/groupsig/workflows/Scheduled%20Release%20Java%20CI/badge.svg)
 ## Cryptimeleon Groupsig
 
 The Groupsig library offers interfaces and tests useful for implementing group signatures as well as example implementations in Java 8.

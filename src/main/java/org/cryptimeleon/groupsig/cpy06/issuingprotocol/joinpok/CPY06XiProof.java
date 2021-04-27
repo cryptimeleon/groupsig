@@ -2,6 +2,7 @@ package org.cryptimeleon.groupsig.cpy06.issuingprotocol.joinpok;
 
 import org.cryptimeleon.craco.protocols.CommonInput;
 import org.cryptimeleon.craco.protocols.SecretInput;
+import org.cryptimeleon.craco.protocols.arguments.sigma.ZnChallengeSpace;
 import org.cryptimeleon.craco.protocols.arguments.sigma.schnorr.DelegateProtocol;
 import org.cryptimeleon.craco.protocols.arguments.sigma.schnorr.LinearStatementFragment;
 import org.cryptimeleon.craco.protocols.arguments.sigma.schnorr.SendThenDelegateFragment.ProverSpec;
@@ -11,8 +12,6 @@ import org.cryptimeleon.craco.protocols.arguments.sigma.schnorr.SendThenDelegate
 import org.cryptimeleon.craco.protocols.arguments.sigma.schnorr.variables.SchnorrZnVariable;
 import org.cryptimeleon.groupsig.cpy06.CPY06PublicParameters;
 import org.cryptimeleon.math.expressions.bool.GroupEqualityExpr;
-
-import java.math.BigInteger;
 
 /**
  * Implements PoK from the Join protocol from [NguSaf04], Section 4.2.
@@ -73,7 +72,7 @@ public class CPY06XiProof extends DelegateProtocol {
     }
 
     @Override
-    public BigInteger getChallengeSpaceSize() {
-        return pp.getBilGroup().getG1().getZn().size();
+    public ZnChallengeSpace getChallengeSpace(CommonInput commonInput) {
+        return new ZnChallengeSpace(pp.getBilGroup().getG1().getZn());
     }
 }

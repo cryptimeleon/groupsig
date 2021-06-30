@@ -2,6 +2,7 @@ package org.cryptimeleon.groupsig.cpy06.claimpok;
 
 import org.cryptimeleon.craco.protocols.CommonInput;
 import org.cryptimeleon.craco.protocols.SecretInput;
+import org.cryptimeleon.craco.protocols.arguments.sigma.ZnChallengeSpace;
 import org.cryptimeleon.craco.protocols.arguments.sigma.schnorr.DelegateProtocol;
 import org.cryptimeleon.craco.protocols.arguments.sigma.schnorr.LinearStatementFragment;
 import org.cryptimeleon.craco.protocols.arguments.sigma.schnorr.SendThenDelegateFragment.ProverSpec;
@@ -13,8 +14,6 @@ import org.cryptimeleon.groupsig.cpy06.CPY06PublicParameters;
 import org.cryptimeleon.groupsig.cpy06.CPY06Signature;
 import org.cryptimeleon.math.expressions.bool.GroupEqualityExpr;
 import org.cryptimeleon.math.structures.rings.zn.Zp;
-
-import java.math.BigInteger;
 
 public class CPY06ClaimFSProof extends DelegateProtocol {
 
@@ -59,7 +58,7 @@ public class CPY06ClaimFSProof extends DelegateProtocol {
     }
 
     @Override
-    public BigInteger getChallengeSpaceSize() {
-        return pp.getBilGroup().getZn().size();
+    public ZnChallengeSpace getChallengeSpace(CommonInput commonInput) {
+        return new ZnChallengeSpace(pp.getBilGroup().getZn());
     }
 }

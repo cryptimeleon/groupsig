@@ -1,12 +1,13 @@
 name: Scheduled Release Java CI
 
 on:
-  # Nightly builds to ensure dependencies don't break anything (disabled until release exists)
-  #schedule:
-  #  - cron: '0 0 * * *'
+  # Nightly builds to ensure dependencies don't break anything
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   build:
+    if: ${{ false }}  # disable for now until Math and Craco updated versions are released
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

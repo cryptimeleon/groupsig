@@ -13,7 +13,7 @@ repositories {
 }
 
 def mathVersionNoSuffix = '2.0.0'
-def cracoVersionNoSuffix = '1.1.0'
+def cracoVersionNoSuffix = '2.0.0'
 
 dependencies {
 
